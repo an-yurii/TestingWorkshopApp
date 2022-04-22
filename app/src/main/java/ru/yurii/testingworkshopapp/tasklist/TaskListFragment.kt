@@ -77,7 +77,6 @@ class TaskListFragment : Fragment() {
                 is ProjectState.FailedToLoad -> showError(state.exception)
             }
         }
-
         viewModel.load()
     }
 
@@ -92,7 +91,11 @@ class TaskListFragment : Fragment() {
     private fun loadDataToAdapter(adapter: TaskListAdapter) {
         viewModel.tasksStateOutput.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is TaskListViewState.Loaded -> adapter.submitList(state.tasks)
+                is TaskListViewState.Loaded -> {
+                    adapter.submitList(state.tasks)
+                    binding.taskList.visibility = if (state.tasks.isEmpty()) View.GONE else View.VISIBLE
+                    binding.splash.visibility = if (state.tasks.isEmpty()) View.VISIBLE else View.GONE
+                }
                 is TaskListViewState.FailedToLoad -> showError(state.exception)
             }.exhaustive
         }
