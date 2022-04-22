@@ -70,7 +70,10 @@ class TaskListFragment : Fragment() {
 
         viewModel.projectName.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is ProjectState.Loaded -> binding.currentProject.text = state.project.title
+                is ProjectState.Loaded -> {
+                    binding.currentProject.visibility = View.VISIBLE
+                    binding.currentProject.text = state.project.title
+                }
                 is ProjectState.FailedToLoad -> showError(state.exception)
             }
         }

@@ -33,7 +33,6 @@ class ProjectListAdapter(
         val contentView: TextView = binding.title
 
         fun bind(project: Project, onItemClick: (project: Project) -> Unit) {
-            binding.itemNumber.text = "${project.id}"
             binding.title.text = project.title
             binding.projectItem.setOnClickListener {
                 onItemClick(project)

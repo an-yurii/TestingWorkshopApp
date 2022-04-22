@@ -2,10 +2,12 @@ package ru.yurii.testingworkshopapp.tasklist
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.TextView
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.core.graphics.drawable.DrawableCompat
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import ru.yurii.testingworkshopapp.R
 import ru.yurii.testingworkshopapp.data.Task
 import ru.yurii.testingworkshopapp.databinding.TaskListItemBinding
 
@@ -26,17 +28,19 @@ class TaskListAdapter : ListAdapter<Task, TaskListAdapter.ViewHolder>(DiffCallba
         holder.bind(item)
     }
 
-    inner class ViewHolder(private val binding: TaskListItemBinding) :
-        RecyclerView.ViewHolder(binding.root) {
-        val contentView: TextView = binding.content
+    inner class ViewHolder(private val binding: TaskListItemBinding) : RecyclerView.ViewHolder(binding.root) {
 
         fun bind(task: Task) {
-            binding.itemNumber.text = "${task.id}"
-            binding.content.text = task.title
-        }
+            val context = binding.bullet.context
+            val originDrawable = AppCompatResources.getDrawable(context, R.drawable.marker)
+            val drawable = DrawableCompat.wrap(originDrawable!!)
+            DrawableCompat.setTint(drawable, context.getColor(task.colorRes))
 
-        override fun toString(): String {
-            return super.toString() + " '" + contentView.text + "'"
+            with(binding) {
+                bullet.setImageDrawable(drawable)
+                bullet.visibility = task.bulletVisibility
+                title.text = task.title
+            }
         }
     }
 

@@ -27,7 +27,9 @@ class TodoistRepositoryIml(
                     id = it.id,
                     projectId = it.projectId,
                     title = it.content,
-                    order = it.order
+                    order = it.order,
+                    priority = it.priority,
+                    colorRes = Palette.getColorByPriority(it.priority)
                 )
             }
         }
