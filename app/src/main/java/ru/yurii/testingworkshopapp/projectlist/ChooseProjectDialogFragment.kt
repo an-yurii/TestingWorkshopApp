@@ -1,0 +1,79 @@
+package ru.yurii.testingworkshopapp.projectlist
+
+import android.os.Bundle
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.Toast
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
+import androidx.fragment.app.viewModels
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import ru.yurii.testingworkshopapp.databinding.ChooseProjectDialogFragmentBinding
+import ru.yurii.testingworkshopapp.di.Component
+import ru.yurii.testingworkshopapp.projectlist.viewmodel.ChooseProjectViewModel
+import ru.yurii.testingworkshopapp.projectlist.viewmodel.ChooseProjectViewModelFactory
+import ru.yurii.testingworkshopapp.projectlist.viewmodel.ChooseProjectViewState
+import ru.yurii.testingworkshopapp.utils.extensions.exhaustive
+
+const val PROJECT_SELECTION_KEY = "PROJECT_SELECTION_KEY"
+const val PROJECT_ID_KEY = "PROJECT_ID_KEY"
+const val PROJECT_TITLE_KEY = "PROJECT_TITLE_KEY"
+
+class ChooseProjectDialogFragment : BottomSheetDialogFragment() {
+
+    private var _binding: ChooseProjectDialogFragmentBinding? = null
+    private val binding get() = _binding!!
+
+    private val viewModel: ChooseProjectViewModel by viewModels {
+        val component = requireActivity() as Component
+        ChooseProjectViewModelFactory(component.provideGetAllProjectsUseCase())
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        _binding = ChooseProjectDialogFragmentBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        with(binding.list) {
+            layoutManager = LinearLayoutManager(context)
+             val projectListAdapter = ProjectListAdapter { project ->
+                setFragmentResult(
+                    PROJECT_SELECTION_KEY,
+                    bundleOf(
+                        PROJECT_ID_KEY to project.id,
+                        PROJECT_TITLE_KEY to project.title
+                    )
+                )
+                dismiss()
+            }
+            adapter = projectListAdapter
+            loadDataToAdapter(projectListAdapter)
+        }
+
+        viewModel.load()
+    }
+
+    private fun loadDataToAdapter(adapter: ProjectListAdapter) {
+        viewModel.projectsStateOutput.observe(viewLifecycleOwner) { state ->
+            when (state) {
+                is ChooseProjectViewState.Loaded -> adapter.submitList(state.projects)
+                is ChooseProjectViewState.FailedToLoad -> Toast.makeText(
+                    requireContext(),
+                    state.exception.message!!,
+                    Toast.LENGTH_SHORT
+                ).show()
+            }.exhaustive
+        }
+    }
+}
