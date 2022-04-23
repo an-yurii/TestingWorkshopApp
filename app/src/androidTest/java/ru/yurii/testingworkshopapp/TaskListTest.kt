@@ -12,33 +12,35 @@ import ru.yurii.testingworkshopapp.screen.TaskListScreen
 class TaskListTest : TestCase() {
 
     @Test
-    fun firstProjectAndItsTasksAreShowByDefault() = run {
+    fun showTasksForFirstProject_ByDefault() = run {
         ActivityScenario.launch(MainActivity::class.java)
 
-        TaskListScreen.projectButton.hasText("Inbox")
-
-        TaskListScreen.taskList.hasSize(12)
-        TaskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
-            title.hasText("TickTick for embedded calendars and timers.")
-            bullet {
-                isDisplayed()
-                hasDrawableWithTint(R.drawable.marker, R.color.olive_green)
+        step("Отображается название проекта") {
+            TaskListScreen.projectButton.hasText("Inbox")
+        }
+        step("Отображается список задач") {
+            TaskListScreen.taskList.hasSize(12)
+            TaskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
+                title.hasText("TickTick for embedded calendars and timers.")
+                bullet {
+                    isDisplayed()
+                    hasDrawableWithTint(R.drawable.marker, R.color.olive_green)
+                }
             }
         }
     }
 
     @Test
-    fun tasksAreReplacedAfterProjectChoosing() {
+    fun tasksAreReplaced_AfterProjectIsChosen() = run {
         ActivityScenario.launch(MainActivity::class.java)
 
-        TaskListScreen.projectButton.click()
-        ChooseProjectScreen.list.childAt<ChooseProjectScreen.ProjectItem>(2) { click() }
-
-        TaskListScreen.projectButton.hasText("Late")
-        TaskListScreen.splash {
-            isVisible()
-            hasDrawable(R.drawable.ic_all_done)
+        step("Выбор проекта") {
+            TaskListScreen.projectButton.click()
+            ChooseProjectScreen.list.childAt<ChooseProjectScreen.ProjectItem>(4) { click() }
         }
-        TaskListScreen.taskList.isNotDisplayed()
+        step("Отображаются задачи выбранного проекта") {
+            TaskListScreen.projectButton.hasText("Try Boards")
+            TaskListScreen.taskList.hasSize(3)
+        }
     }
 }
