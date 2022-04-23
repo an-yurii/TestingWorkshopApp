@@ -48,11 +48,11 @@ internal class TaskListViewModelImpl(
     private fun loadFirstProject() {
         getAllProjectsUseCase()
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
+//            .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { projects ->
                     val firstProject = projects.first()
-                    projectName.value = ProjectState.Loaded(firstProject)
+                    projectName.postValue(ProjectState.Loaded(firstProject))
                     loadTasks(firstProject.id)
                 },
                 { throwable -> Log.w("Error", throwable) }
