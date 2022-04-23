@@ -9,8 +9,8 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import ru.yurii.testingworkshopapp.appComponent
 import ru.yurii.testingworkshopapp.databinding.TaskListFragmentBinding
-import ru.yurii.testingworkshopapp.di.Component
 import ru.yurii.testingworkshopapp.projectlist.ChooseProjectDialogFragment
 import ru.yurii.testingworkshopapp.projectlist.PROJECT_ID_KEY
 import ru.yurii.testingworkshopapp.projectlist.PROJECT_SELECTION_KEY
@@ -27,7 +27,7 @@ class TaskListFragment : Fragment() {
     private val binding: TaskListFragmentBinding get() = _binding!!
 
     private val viewModel: TaskListViewModel by viewModels {
-        val component = requireActivity() as Component
+        val component = requireContext().appComponent()
         TaskListViewModelFactory(
             component.provideGetAllProjectsUseCase(),
             component.provideTasksForProjectUseCase()

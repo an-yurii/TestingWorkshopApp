@@ -11,7 +11,7 @@ interface TodoistRepository {
     fun tasks(): Single<List<Task>>
 }
 
-class TodoistRepositoryIml(
+class TodoistRepositoryImpl(
     private val api: TodoistApiService
 ) : TodoistRepository {
     override fun projects(): Single<List<Project>> {

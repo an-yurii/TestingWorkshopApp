@@ -10,8 +10,8 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import ru.yurii.testingworkshopapp.appComponent
 import ru.yurii.testingworkshopapp.databinding.ChooseProjectDialogFragmentBinding
-import ru.yurii.testingworkshopapp.di.Component
 import ru.yurii.testingworkshopapp.projectlist.viewmodel.ChooseProjectViewModel
 import ru.yurii.testingworkshopapp.projectlist.viewmodel.ChooseProjectViewModelFactory
 import ru.yurii.testingworkshopapp.projectlist.viewmodel.ChooseProjectViewState
@@ -27,7 +27,7 @@ class ChooseProjectDialogFragment : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ChooseProjectViewModel by viewModels {
-        val component = requireActivity() as Component
+        val component = requireContext().appComponent()
         ChooseProjectViewModelFactory(component.provideGetAllProjectsUseCase())
     }
 
