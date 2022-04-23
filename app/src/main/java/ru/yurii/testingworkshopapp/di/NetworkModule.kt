@@ -12,11 +12,8 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import ru.yurii.testingworkshopapp.data.api.TodoistApiService
 import java.util.concurrent.TimeUnit
 
-/**
- * @author y.anisimov
- */
 class NetworkModule(
-    private val apiUrlProvider: ApiUrlProvider
+    apiUrlProvider: ApiUrlProvider
 ) {
 
     private val json = Json {

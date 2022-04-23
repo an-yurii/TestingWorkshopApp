@@ -7,9 +7,6 @@ import ru.yurii.testingworkshopapp.data.Project
 import ru.yurii.testingworkshopapp.data.usecase.GetAllProjectsUseCase
 import ru.yurii.testingworkshopapp.data.usecase.TasksForProjectUseCase
 
-/**
- * @author y.anisimov
- */
 internal class TaskListViewModelImpl(
     private val getAllProjectsUseCase: GetAllProjectsUseCase,
     private val tasksForProjectUseCase: TasksForProjectUseCase

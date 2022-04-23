@@ -7,38 +7,13 @@ import io.reactivex.schedulers.Schedulers
 import org.junit.rules.TestWatcher
 import org.junit.runner.Description
 
-/**
- * @author y.anisimov
- */
 class RxRule(
     val scheduler: Scheduler = Schedulers.trampoline()
 ) : TestWatcher() {
 
     override fun starting(description: Description?) {
         super.starting(description)
-        before()
-    }
 
-    override fun finished(description: Description?) {
-        super.finished(description)
-        after()
-    }
-
-    //    override fun apply(base: Statement?, description: Description?): Statement {
-//        return object : Statement() {
-//            override fun evaluate() {
-//                before()
-//                try {
-//                    base?.evaluate()
-//                }
-//                finally {
-//                    after()
-//                }
-//            }
-//        }
-//    }
-
-    private fun before() {
         RxAndroidPlugins.setInitMainThreadSchedulerHandler { scheduler }
         RxAndroidPlugins.setMainThreadSchedulerHandler { scheduler }
         RxJavaPlugins.setComputationSchedulerHandler { scheduler }
@@ -46,8 +21,11 @@ class RxRule(
         RxJavaPlugins.setNewThreadSchedulerHandler { scheduler }
     }
 
-    private fun after() {
+    override fun finished(description: Description?) {
+        super.finished(description)
+
         RxJavaPlugins.reset()
         RxAndroidPlugins.reset()
     }
+
 }

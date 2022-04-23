@@ -5,9 +5,6 @@ import ru.yurii.testingworkshopapp.data.api.ProjectResponse
 import ru.yurii.testingworkshopapp.data.api.TaskResponse
 import ru.yurii.testingworkshopapp.data.api.TodoistApiService
 
-/**
- * @author y.anisimov
- */
 interface TodoistRepository {
     fun projects(): Single<List<Project>>
     fun tasks(): Single<List<Task>>

@@ -13,9 +13,6 @@ import ru.yurii.testingworkshopapp.stub.GetAllProjectsUseCaseStub
 import ru.yurii.testingworkshopapp.stub.TasksForProjectUseCaseStub
 import ru.yurii.testingworkshopapp.util.RxRule
 
-/**
- * @author y.anisimov
- */
 class TaskListViewModelImplTest {
 
     @get:Rule
@@ -78,12 +75,5 @@ class TaskListViewModelImplTest {
         order: Int = 0,
         priority: Int = 0,
         colorRes: Int = 0
-    ): Task = Task(
-        id = id,
-        projectId = projectId,
-        title = title,
-        order = order,
-        priority = priority,
-        colorRes = colorRes
-    )
+    ): Task = Task(id = id, projectId = projectId, title = title, order = order, priority = priority, colorRes = colorRes)
 }

@@ -1,8 +1,5 @@
 package ru.yurii.testingworkshopapp.di
 
-/**
- * @author y.anisimov
- */
 interface ApiUrlProvider {
     var url: String
 

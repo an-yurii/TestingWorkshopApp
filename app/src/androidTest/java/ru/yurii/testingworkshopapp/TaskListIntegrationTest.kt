@@ -9,9 +9,6 @@ import org.junit.Test
 import ru.yurii.testingworkshopapp.screen.TaskListScreen
 import ru.yurii.testingworkshopapp.util.MockRequestDispatcher
 
-/**
- * @author y.anisimov
- */
 class TaskListIntegrationTest : TestCase() {
 
     @get:Rule

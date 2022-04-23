@@ -4,9 +4,6 @@ import androidx.lifecycle.LiveData
 import ru.yurii.testingworkshopapp.data.Project
 import ru.yurii.testingworkshopapp.utils.ViewModelRx
 
-/**
- * @author y.anisimov
- */
 internal abstract class TaskListViewModel : ViewModelRx() {
 
     abstract val tasksStateOutput: LiveData<TaskListState>

@@ -5,9 +5,6 @@ import android.content.Context
 import ru.yurii.testingworkshopapp.di.AppComponent
 import ru.yurii.testingworkshopapp.di.AppModule
 
-/**
- * @author y.anisimov
- */
 class App : Application() {
     val component: AppComponent by lazy { AppModule() }
 }

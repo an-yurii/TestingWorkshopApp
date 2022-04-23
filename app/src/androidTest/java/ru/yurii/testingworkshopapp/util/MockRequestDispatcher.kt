@@ -4,9 +4,6 @@ import okhttp3.mockwebserver.Dispatcher
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.RecordedRequest
 
-/**
- * @author y.anisimov
- */
 class MockRequestDispatcher : Dispatcher() {
 
     private val responses: MutableMap<String, MockResponse> = mutableMapOf()

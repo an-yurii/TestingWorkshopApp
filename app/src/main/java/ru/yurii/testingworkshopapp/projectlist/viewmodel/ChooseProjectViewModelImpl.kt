@@ -6,9 +6,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.schedulers.Schedulers
 import ru.yurii.testingworkshopapp.data.usecase.GetAllProjectsUseCase
 
-/**
- * @author y.anisimov
- */
 internal class ChooseProjectViewModelImpl(
     private val getAllProjectsUseCase: GetAllProjectsUseCase
 ) : ChooseProjectViewModel() {

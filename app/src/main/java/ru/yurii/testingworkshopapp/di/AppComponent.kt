@@ -7,9 +7,6 @@ import ru.yurii.testingworkshopapp.data.usecase.GetAllProjectsUseCaseImpl
 import ru.yurii.testingworkshopapp.data.usecase.TasksForProjectUseCase
 import ru.yurii.testingworkshopapp.data.usecase.TasksForProjectUseCaseImpl
 
-/**
- * @author y.anisimov
- */
 interface AppComponent {
     fun apiUrlProvider(): ApiUrlProvider
     fun provideGetAllProjectsUseCase(): GetAllProjectsUseCase

@@ -6,9 +6,6 @@ import org.junit.Test
 import ru.yurii.testingworkshopapp.screen.ChooseProjectScreen
 import ru.yurii.testingworkshopapp.screen.TaskListScreen
 
-/**
- * @author y.anisimov
- */
 class TaskListTest : TestCase() {
 
     @Test
