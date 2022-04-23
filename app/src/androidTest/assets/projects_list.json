@@ -1,0 +1,68 @@
+[
+	{
+		"id": 2290203679,
+		"color": 48,
+		"name": "Inbox",
+		"comment_count": 0,
+		"shared": false,
+		"favorite": false,
+		"sync_id": 0,
+		"inbox_project": true,
+		"url": "https://todoist.com/showProject?id=2290203679"
+	},
+	{
+		"id": 2290210169,
+		"order": 1,
+		"color": 46,
+		"name": "Week",
+		"comment_count": 0,
+		"shared": false,
+		"favorite": false,
+		"sync_id": 0,
+		"url": "https://todoist.com/showProject?id=2290210169"
+	},
+	{
+		"id": 2290210170,
+		"order": 2,
+		"color": 47,
+		"name": "Late",
+		"comment_count": 0,
+		"shared": false,
+		"favorite": false,
+		"sync_id": 0,
+		"url": "https://todoist.com/showProject?id=2290210170"
+	},
+	{
+		"id": 2290203680,
+		"order": 3,
+		"color": 38,
+		"name": "Welcome 👋",
+		"comment_count": 0,
+		"shared": false,
+		"favorite": false,
+		"sync_id": 0,
+		"url": "https://todoist.com/showProject?id=2290203680"
+	},
+	{
+		"id": 2290203681,
+		"order": 4,
+		"color": 48,
+		"name": "Try Boards",
+		"comment_count": 0,
+		"shared": false,
+		"favorite": false,
+		"sync_id": 0,
+		"url": "https://todoist.com/showProject?id=2290203681"
+	},
+	{
+		"id": 2290210104,
+		"order": 5,
+		"color": 37,
+		"name": "Birthdates",
+		"comment_count": 0,
+		"shared": false,
+		"favorite": false,
+		"sync_id": 0,
+		"url": "https://todoist.com/showProject?id=2290210104"
+	}
+]
