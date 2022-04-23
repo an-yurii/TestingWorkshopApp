@@ -18,8 +18,6 @@ import ru.yurii.testingworkshopapp.projectlist.viewmodel.ChooseProjectViewState
 import ru.yurii.testingworkshopapp.utils.extensions.exhaustive
 
 const val PROJECT_SELECTION_KEY = "PROJECT_SELECTION_KEY"
-const val PROJECT_ID_KEY = "PROJECT_ID_KEY"
-const val PROJECT_TITLE_KEY = "PROJECT_TITLE_KEY"
 
 class ChooseProjectDialogFragment : BottomSheetDialogFragment() {
 
@@ -34,7 +32,7 @@ class ChooseProjectDialogFragment : BottomSheetDialogFragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = ChooseProjectDialogFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -48,13 +46,7 @@ class ChooseProjectDialogFragment : BottomSheetDialogFragment() {
         with(binding.list) {
             layoutManager = LinearLayoutManager(context)
              val projectListAdapter = ProjectListAdapter { project ->
-                setFragmentResult(
-                    PROJECT_SELECTION_KEY,
-                    bundleOf(
-                        PROJECT_ID_KEY to project.id,
-                        PROJECT_TITLE_KEY to project.title
-                    )
-                )
+                setFragmentResult(PROJECT_SELECTION_KEY, bundleOf(PROJECT_SELECTION_KEY to project))
                 dismiss()
             }
             adapter = projectListAdapter
