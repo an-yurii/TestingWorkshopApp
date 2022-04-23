@@ -2,9 +2,6 @@ package ru.yurii.testingworkshopapp.data
 
 import ru.yurii.testingworkshopapp.data.api.TaskResponse
 
-/**
- * @author y.anisimov
- */
 object TaskMapper {
     fun responseToTask(taskResponse: TaskResponse): Task {
         return Task(
