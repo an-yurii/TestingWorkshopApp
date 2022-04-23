@@ -7,19 +7,27 @@
 - Найти класс `TaskMapper`
 
     Вы можете воспользоваться возможностями меню **Navigate**
+
     ![Project navigation](images/navigation-tip.png)
 
 - Установить курсор на название класса
+
     ![Project navigation](images/situate-on-class-name.png)
   
 - В меню **Navigate** выбрать пункт **Test** (или нажать на желтую ламочку рядом с названием класса)
+
     ![Project navigation](images/navigate-test.png)
+
 - Выбрать **Create new test**
+
     ![Project navigation](images/create-new-test.png)
+
 - Выбрать в появившемся окне библиотеку `JUnit4`
+
     ![Project navigation](images/choose-junit4.png)
 
 - Выбрать директорию `/test/` (директория для модульных тестов)
+
     ![Project navigation](images/choose-test-directory.png)
 
 - Добавить пустое тело класса `TaskMapperTest`
