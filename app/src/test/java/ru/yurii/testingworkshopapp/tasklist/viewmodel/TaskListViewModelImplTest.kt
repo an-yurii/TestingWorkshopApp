@@ -66,7 +66,11 @@ class TaskListViewModelImplTest {
         id: Long = 1L,
         title: String = "",
         order: Int = 0,
-    ): Project = Project(id = id, title = title, order = order)
+    ): Project = Project(
+        id = id,
+        title = title,
+        order = order
+    )
 
     private fun createTask(
         id: Long = 0L,
@@ -75,5 +79,12 @@ class TaskListViewModelImplTest {
         order: Int = 0,
         priority: Int = 0,
         colorRes: Int = 0
-    ): Task = Task(id = id, projectId = projectId, title = title, order = order, priority = priority, colorRes = colorRes)
+    ): Task = Task(
+        id = id,
+        projectId = projectId,
+        title = title,
+        order = order,
+        priority = priority,
+        colorRes = colorRes
+    )
 }
