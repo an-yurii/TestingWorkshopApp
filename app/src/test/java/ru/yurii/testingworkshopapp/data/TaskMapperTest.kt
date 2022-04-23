@@ -8,21 +8,6 @@ import ru.yurii.testingworkshopapp.data.api.TaskResponse
 class TaskMapperTest {
 
     @Test
-    fun `ORIGIN responseToTask by default returns Task item`() {
-        val taskResponse = TaskResponse(
-            id = 1L, projectId = 2L, content = "Test item", order = 5, priority = 2
-        )
-
-        val task = TaskMapper.responseToTask(taskResponse)
-
-        assertEquals(1L, task.id)
-        assertEquals(2L, task.projectId)
-        assertEquals("Test item", task.title)
-        assertEquals(5, task.order)
-        assertEquals(2, task.priority)
-    }
-
-    @Test
     fun `responseToTask by default returns Task item`() {
         val taskResponse = createTaskResponse(
             id = 1L, projectId = 2L, content = "Test item", order = 5, priority = 2
