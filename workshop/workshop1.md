@@ -162,8 +162,8 @@
 - Запустить тесты для класса `TaskMapperTest`
 
     Оба теста должны выполниться успешно
-        - `responseToTask by default returns Task item`
-        - `responseToTask for priority 4 returns color orange`
+    - `responseToTask by default returns Task item`
+    - `responseToTask for priority 4 returns color orange`
 
 ## Протестировать тест
 
