@@ -1,3 +1,18 @@
+# Workshop 1
+
+В рамках воркшопа вы создадите пару тестов для `TaskMapper`
+
+## Добавить тест класс
+
+- Найти класс `TaskMapper`
+    Вы можете воспользоваться возможностями меню **Navigate**
+    ![Project navigation](images/navigation-tip.png)
+
+# Summary
+
+В результате у вас должно получиться что-то похожее на:
+
+```kotlin
 package ru.yurii.testingworkshopapp.data
 
 import org.junit.Assert.assertEquals
@@ -6,21 +21,6 @@ import ru.yurii.testingworkshopapp.R
 import ru.yurii.testingworkshopapp.data.api.TaskResponse
 
 class TaskMapperTest {
-
-    @Test
-    fun `ORIGIN responseToTask by default returns Task item`() {
-        val taskResponse = TaskResponse(
-            id = 1L, projectId = 2L, content = "Test item", order = 5, priority = 2
-        )
-
-        val task = TaskMapper.responseToTask(taskResponse)
-
-        assertEquals(1L, task.id)
-        assertEquals(2L, task.projectId)
-        assertEquals("Test item", task.title)
-        assertEquals(5, task.order)
-        assertEquals(2, task.priority)
-    }
 
     @Test
     fun `responseToTask by default returns Task item`() {
@@ -62,3 +62,4 @@ class TaskMapperTest {
         )
     }
 }
+```
