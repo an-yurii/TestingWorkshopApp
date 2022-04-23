@@ -3,6 +3,8 @@ package ru.yurii.testingworkshopapp
 import androidx.test.core.app.ActivityScenario
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import org.junit.Test
+import ru.yurii.testingworkshopapp.screen.ChooseProjectScreen
+import ru.yurii.testingworkshopapp.screen.TaskListScreen
 
 /**
  * @author y.anisimov

@@ -16,11 +16,12 @@ interface AppComponent {
     fun provideTasksForProjectUseCase(): TasksForProjectUseCase
 }
 
-class AppModule() : AppComponent {
+class AppModule : AppComponent {
+    private val apiUrlProvider: ApiUrlProvider by lazy { ApiUrlProvider.Impl() }
     private val networkModule by lazy { NetworkModule(apiUrlProvider()) }
     private val todoistRepository: TodoistRepository by lazy { TodoistRepositoryImpl(networkModule.api) }
 
-    override fun apiUrlProvider(): ApiUrlProvider = ApiUrlProvider.Impl()
+    override fun apiUrlProvider(): ApiUrlProvider = apiUrlProvider
 
     override fun provideGetAllProjectsUseCase(): GetAllProjectsUseCase {
         return GetAllProjectsUseCaseImpl(todoistRepository)

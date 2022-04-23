@@ -1,4 +1,4 @@
-package ru.yurii.testingworkshopapp
+package ru.yurii.testingworkshopapp.screen
 
 import android.view.View
 import com.kaspersky.kaspresso.screens.KScreen
@@ -8,6 +8,7 @@ import io.github.kakaocup.kakao.recycler.KRecyclerView
 import io.github.kakaocup.kakao.text.KButton
 import io.github.kakaocup.kakao.text.KTextView
 import org.hamcrest.Matcher
+import ru.yurii.testingworkshopapp.R
 import ru.yurii.testingworkshopapp.tasklist.TaskListFragment
 
 /**
