@@ -23,5 +23,4 @@ object TaskListScreen : KScreen<TaskListScreen>() {
         val title = KTextView(parent) { withId(R.id.title) }
         val bullet = KImageView(parent) { withId(R.id.bullet) }
     }
-
 }
