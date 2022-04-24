@@ -92,7 +92,7 @@ class TaskListFragment : Fragment() {
                 is TaskListState.Loaded -> {
                     adapter.submitList(state.tasks)
                     binding.taskList.visibility = if (state.tasks.isEmpty()) View.GONE else View.VISIBLE
-                    binding.splash.visibility = if (state.tasks.isEmpty()) View.VISIBLE else View.GONE
+                    binding.placeholder.visibility = if (state.tasks.isEmpty()) View.VISIBLE else View.GONE
                 }
                 is TaskListState.FailedToLoad -> showError(state.exception)
             }.exhaustive

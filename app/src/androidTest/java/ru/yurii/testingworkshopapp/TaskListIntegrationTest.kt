@@ -20,7 +20,7 @@ class TaskListIntegrationTest : TestCase() {
     }
 
     @Test
-    fun showSplash_WhenTaskListIsEmpty() = run {
+    fun showPlaceholder_WhenTaskListIsEmpty() = run {
         mockServer.dispatcher = MockRequestDispatcher().apply {
             returnsForPath("/v1/projects") { setBody(loadFromAssets("projects_list.json")) }
             returnsForPath("/v1/tasks") { setBody("[]") }
@@ -32,7 +32,7 @@ class TaskListIntegrationTest : TestCase() {
             TaskListScreen.projectButton.hasText("Inbox (local)")
         }
         step("Отображается сплеш") {
-            TaskListScreen.splash {
+            TaskListScreen.placeholder {
                 isVisible()
                 hasDrawable(R.drawable.ic_all_done)
             }
