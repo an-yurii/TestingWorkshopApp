@@ -90,9 +90,9 @@
 
 ## Тест выбора цвета
 
-- Создать фабричный метод `createTaskResponse(...)`
+- Создать фабричный метод `createTaskResponse(...)` в классе `TaskMapperTest`
     ```kotlin
-    fun createTaskResponse(
+    private fun createTaskResponse(
         id: Long = 0L,
         projectId: Long = 0L,
         content: String = "",

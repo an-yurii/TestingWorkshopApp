@@ -31,7 +31,7 @@ class TaskMapperTest {
         assertEquals(R.color.orange, task.colorRes)
     }
 
-    fun createTaskResponse(
+    private fun createTaskResponse(
         id: Long = 0L,
         projectId: Long = 0L,
         content: String = "",
