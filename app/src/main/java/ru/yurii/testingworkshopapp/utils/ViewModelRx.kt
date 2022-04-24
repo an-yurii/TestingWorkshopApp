@@ -4,9 +4,6 @@ import androidx.lifecycle.ViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 
-/**
- * @author y.anisimov
- */
 abstract class ViewModelRx : ViewModel() {
     private val disposables = CompositeDisposable()
 

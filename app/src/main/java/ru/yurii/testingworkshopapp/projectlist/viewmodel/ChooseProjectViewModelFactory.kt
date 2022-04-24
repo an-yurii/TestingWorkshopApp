@@ -4,9 +4,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import ru.yurii.testingworkshopapp.data.usecase.GetAllProjectsUseCase
 
-/**
- * @author y.anisimov
- */
 @Suppress("UNCHECKED_CAST")
 class ChooseProjectViewModelFactory(
     private val getAllProjectsUseCase: GetAllProjectsUseCase

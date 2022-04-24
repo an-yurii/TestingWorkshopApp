@@ -9,16 +9,15 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
+import ru.yurii.testingworkshopapp.appComponent
+import ru.yurii.testingworkshopapp.data.Project
 import ru.yurii.testingworkshopapp.databinding.TaskListFragmentBinding
-import ru.yurii.testingworkshopapp.di.Component
 import ru.yurii.testingworkshopapp.projectlist.ChooseProjectDialogFragment
-import ru.yurii.testingworkshopapp.projectlist.PROJECT_ID_KEY
 import ru.yurii.testingworkshopapp.projectlist.PROJECT_SELECTION_KEY
-import ru.yurii.testingworkshopapp.projectlist.PROJECT_TITLE_KEY
 import ru.yurii.testingworkshopapp.tasklist.viewmodel.ProjectState
+import ru.yurii.testingworkshopapp.tasklist.viewmodel.TaskListState
 import ru.yurii.testingworkshopapp.tasklist.viewmodel.TaskListViewModel
 import ru.yurii.testingworkshopapp.tasklist.viewmodel.TaskListViewModelFactory
-import ru.yurii.testingworkshopapp.tasklist.viewmodel.TaskListViewState
 import ru.yurii.testingworkshopapp.utils.extensions.exhaustive
 
 class TaskListFragment : Fragment() {
@@ -27,7 +26,7 @@ class TaskListFragment : Fragment() {
     private val binding: TaskListFragmentBinding get() = _binding!!
 
     private val viewModel: TaskListViewModel by viewModels {
-        val component = requireActivity() as Component
+        val component = requireContext().appComponent()
         TaskListViewModelFactory(
             component.provideGetAllProjectsUseCase(),
             component.provideTasksForProjectUseCase()
@@ -37,13 +36,12 @@ class TaskListFragment : Fragment() {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = TaskListFragmentBinding.inflate(inflater, container, false)
 
         setFragmentResultListener(PROJECT_SELECTION_KEY) { key, bundle ->
-            val id = bundle.getLong(PROJECT_ID_KEY)!!
-            val title = bundle.getString(PROJECT_TITLE_KEY, "Nop!")
-            viewModel.loadTasksForProject(id, title)
+            val project = bundle.getParcelable<Project>(PROJECT_SELECTION_KEY)!!
+            viewModel.loadTasksForProject(project)
         }
 
         return binding.root
@@ -91,12 +89,12 @@ class TaskListFragment : Fragment() {
     private fun loadDataToAdapter(adapter: TaskListAdapter) {
         viewModel.tasksStateOutput.observe(viewLifecycleOwner) { state ->
             when (state) {
-                is TaskListViewState.Loaded -> {
+                is TaskListState.Loaded -> {
                     adapter.submitList(state.tasks)
                     binding.taskList.visibility = if (state.tasks.isEmpty()) View.GONE else View.VISIBLE
-                    binding.splash.visibility = if (state.tasks.isEmpty()) View.VISIBLE else View.GONE
+                    binding.placeholder.visibility = if (state.tasks.isEmpty()) View.VISIBLE else View.GONE
                 }
-                is TaskListViewState.FailedToLoad -> showError(state.exception)
+                is TaskListState.FailedToLoad -> showError(state.exception)
             }.exhaustive
         }
     }

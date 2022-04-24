@@ -12,12 +12,10 @@ import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import ru.yurii.testingworkshopapp.data.api.TodoistApiService
 import java.util.concurrent.TimeUnit
 
-/**
- * @author y.anisimov
- */
-class NetworkModule {
+class NetworkModule(
+    apiUrlProvider: ApiUrlProvider
+) {
 
-    private val baseUrl = "https://api.todoist.com/rest/"
     private val json = Json {
         prettyPrint = true
         isLenient = true
@@ -40,7 +38,7 @@ class NetworkModule {
         .build()
 
     private val retrofitBuilder = Retrofit.Builder()
-        .baseUrl(baseUrl)
+        .baseUrl(apiUrlProvider.url)
         .addConverterFactory(json.asConverterFactory(contentType))
         .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
         .client(httpClient)

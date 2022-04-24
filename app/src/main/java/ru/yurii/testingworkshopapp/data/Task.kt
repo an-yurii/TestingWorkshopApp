@@ -2,9 +2,6 @@ package ru.yurii.testingworkshopapp.data
 
 import android.view.View
 
-/**
- * @author y.anisimov
- */
 data class Task(
     val id: Long,
     val projectId: Long,

@@ -4,9 +4,6 @@ import io.reactivex.Single
 import ru.yurii.testingworkshopapp.data.Task
 import ru.yurii.testingworkshopapp.data.TodoistRepository
 
-/**
- * @author y.anisimov
- */
 interface TasksForProjectUseCase {
     operator fun invoke(projectId: Long): Single<List<Task>>
 }

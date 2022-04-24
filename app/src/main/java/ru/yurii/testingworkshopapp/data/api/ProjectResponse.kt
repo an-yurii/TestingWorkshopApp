@@ -3,9 +3,6 @@ package ru.yurii.testingworkshopapp.data.api
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 
-/**
- * @author y.anisimov
- */
 @Serializable
 data class ProjectResponse(
     val id: Long,

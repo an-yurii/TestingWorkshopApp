@@ -10,16 +10,14 @@ import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import ru.yurii.testingworkshopapp.appComponent
 import ru.yurii.testingworkshopapp.databinding.ChooseProjectDialogFragmentBinding
-import ru.yurii.testingworkshopapp.di.Component
 import ru.yurii.testingworkshopapp.projectlist.viewmodel.ChooseProjectViewModel
 import ru.yurii.testingworkshopapp.projectlist.viewmodel.ChooseProjectViewModelFactory
 import ru.yurii.testingworkshopapp.projectlist.viewmodel.ChooseProjectViewState
 import ru.yurii.testingworkshopapp.utils.extensions.exhaustive
 
 const val PROJECT_SELECTION_KEY = "PROJECT_SELECTION_KEY"
-const val PROJECT_ID_KEY = "PROJECT_ID_KEY"
-const val PROJECT_TITLE_KEY = "PROJECT_TITLE_KEY"
 
 class ChooseProjectDialogFragment : BottomSheetDialogFragment() {
 
@@ -27,14 +25,14 @@ class ChooseProjectDialogFragment : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
 
     private val viewModel: ChooseProjectViewModel by viewModels {
-        val component = requireActivity() as Component
+        val component = requireContext().appComponent()
         ChooseProjectViewModelFactory(component.provideGetAllProjectsUseCase())
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = ChooseProjectDialogFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -48,13 +46,7 @@ class ChooseProjectDialogFragment : BottomSheetDialogFragment() {
         with(binding.list) {
             layoutManager = LinearLayoutManager(context)
              val projectListAdapter = ProjectListAdapter { project ->
-                setFragmentResult(
-                    PROJECT_SELECTION_KEY,
-                    bundleOf(
-                        PROJECT_ID_KEY to project.id,
-                        PROJECT_TITLE_KEY to project.title
-                    )
-                )
+                setFragmentResult(PROJECT_SELECTION_KEY, bundleOf(PROJECT_SELECTION_KEY to project))
                 dismiss()
             }
             adapter = projectListAdapter

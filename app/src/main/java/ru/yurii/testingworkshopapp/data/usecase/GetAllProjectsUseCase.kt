@@ -4,9 +4,6 @@ import io.reactivex.Single
 import ru.yurii.testingworkshopapp.data.Project
 import ru.yurii.testingworkshopapp.data.TodoistRepository
 
-/**
- * @author y.anisimov
- */
 interface GetAllProjectsUseCase {
     operator fun invoke(): Single<List<Project>>
 }
