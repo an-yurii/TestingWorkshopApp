@@ -32,6 +32,7 @@
 
     - Создать Singleton (использовать ключевое слово `object`)
     - Унаследовать от `KScreen` и типизировать `TaskListScreen`
+  
     ```kotlin
     object TaskListScreen : KScreen<TaskListScreen>() {
     }
@@ -98,9 +99,11 @@
     }
     ```
 
-    **Если вы забудете унаследовать класс от `TestCase`, будет использован метод Kotlin** 
+    > **ВАЖНО! Если вы забудете унаследовать тест класс от `TestCase`, будет использован `run` метод Kotlin. Будут подсвечены методы `step(...)`.** 
 
-    ![Project navigation](images/pay-attention-to-run-method.png)
+    > Так выглядит подсветка синтаксиса при использовании `run` метода Kotlin.
+
+    > ![Project navigation](images/pay-attention-to-run-method.png)
 
 - Добавить запуск `MainActivity`
     ```kotlin
@@ -137,45 +140,45 @@
 - Добавить проверку атрибутов одного из элементов списка
 
     - Выбрать элемент
-    ```kotlin
-    @Test
-    fun showTasksForFirstProject_ByDefault() = run {
-        ...
-        step("Отображается список задач") {
-            TaskListScreen.taskList.hasSize(...)
-            TaskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
-            }
-        }
-    }
-    ```
-
-    - Проверить текст
-    ```kotlin
-    @Test
-    fun showTasksForFirstProject_ByDefault() = run {
-        ...
-            TaskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
-                title.hasText("TickTick for embedded calendars and timers.")
-            }
-        ...
-    }
-    ```
-
-    - Проверить маркер
-    ```kotlin
-    @Test
-    fun showTasksForFirstProject_ByDefault() = run {
-        ...
-            TaskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
-                title.hasText(...)
-                bullet {
-                    isDisplayed()
-                    hasDrawableWithTint(R.drawable.marker, R.color.olive_green)
+        ```kotlin
+        @Test
+        fun showTasksForFirstProject_ByDefault() = run {
+            ...
+            step("Отображается список задач") {
+                TaskListScreen.taskList.hasSize(...)
+                TaskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
                 }
             }
-        ...
-    }
-    ```
+        }
+        ```
+
+    - Проверить текст
+        ```kotlin
+        @Test
+        fun showTasksForFirstProject_ByDefault() = run {
+            ...
+                TaskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
+                    title.hasText("TickTick for embedded calendars and timers.")
+                }
+            ...
+        }
+        ```
+
+    - Проверить маркер
+        ```kotlin
+        @Test
+        fun showTasksForFirstProject_ByDefault() = run {
+            ...
+                TaskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
+                    title.hasText(...)
+                    bullet {
+                        isDisplayed()
+                        hasDrawableWithTint(R.drawable.marker, R.color.olive_green)
+                    }
+                }
+            ...
+        }
+        ```
 
 - Запустить тест. 
 
@@ -189,6 +192,7 @@
 
   - Создать Singleton (использовать ключевое слово `object`)
   - Унаследовать от `KScreen` и типизировать `ChooseProjectScreen`
+    
     ```kotlin
     object ChooseProjectScreen : KScreen<ChooseProjectScreen>() {
     }
@@ -250,57 +254,59 @@
 - Добавить шаг выбора проекта
 
     - Кликнуть по кнопке "Проект"
-    ```kotlin
-    @Test
-    fun tasksAreReplaced_AfterProjectIsChosen() = run {
-        ActivityScenario.launch(...)
-
-        step("Выбор проекта") {
-            TaskListScreen.projectButton.click()
+        ```kotlin
+        @Test
+        fun tasksAreReplaced_AfterProjectIsChosen() = run {
+            ActivityScenario.launch(...)
+    
+            step("Выбор проекта") {
+                TaskListScreen.projectButton.click()
+            }
         }
-    }
-    ```
+        ```
 
     - Кликнуть на элементе в открывшемся списке проектов
-    ```kotlin
-    @Test
-    fun tasksAreReplaced_AfterProjectIsChosen() = run {
-        step("Выбор проекта") {
-            TaskListScreen ...
-            ChooseProjectScreen.list.childAt<ChooseProjectScreen.ProjectItem>(4) { click() }
+        ```kotlin
+        @Test
+        fun tasksAreReplaced_AfterProjectIsChosen() = run {
+            step("Выбор проекта") {
+                TaskListScreen ...
+                ChooseProjectScreen.list.childAt<ChooseProjectScreen.ProjectItem>(4) { click() }
+            }
         }
-    }
-    ```
+        ```
 
 - Добавить шаг проверки новых элементов в списке задач
 
     - Проверить текст на кнопке "Проект"
-    ```kotlin
-    @Test
-    fun tasksAreReplaced_AfterProjectIsChosen() = run {
-        step("Выбор проекта") { ... }
-        step("Отображаются задачи выбранного проекта") {
-            TaskListScreen.projectButton.hasText("Try Boards")
+        ```kotlin
+        @Test
+        fun tasksAreReplaced_AfterProjectIsChosen() = run {
+            step("Выбор проекта") { ... }
+            step("Отображаются задачи выбранного проекта") {
+                TaskListScreen.projectButton.hasText("Try Boards")
+            }
         }
-    }
-    ```
+        ```
 
     - Проверить количество элементов в списке
-    ```kotlin
-    @Test
-    fun tasksAreReplaced_AfterProjectIsChosen() = run {
-        step("Отображаются задачи выбранного проекта") {
-            TaskListScreen.projectButton ...
-            TaskListScreen.taskList.hasSize(3)
+        ```kotlin
+        @Test
+        fun tasksAreReplaced_AfterProjectIsChosen() = run {
+            step("Отображаются задачи выбранного проекта") {
+                TaskListScreen.projectButton ...
+                TaskListScreen.taskList.hasSize(3)
+            }
         }
-    }
-    ```
+        ```
 
 - Запустить тесты для класса `TaskListTest`
 
 # Summary
 
 В результате у вас должно получиться что-то похожее на:
+
+### Тест класс
 
 ```kotlin
 package ru.yurii.testingworkshopapp
@@ -344,6 +350,61 @@ class TaskListTest : TestCase() {
             TaskListScreen.projectButton.hasText("Try Boards")
             TaskListScreen.taskList.hasSize(3)
         }
+    }
+}
+```
+
+### Page Objects
+
+```kotlin
+package ru.yurii.testingworkshopapp.screen
+
+import android.view.View
+import com.kaspersky.kaspresso.screens.KScreen
+import io.github.kakaocup.kakao.image.KImageView
+import io.github.kakaocup.kakao.recycler.KRecyclerItem
+import io.github.kakaocup.kakao.recycler.KRecyclerView
+import io.github.kakaocup.kakao.text.KButton
+import io.github.kakaocup.kakao.text.KTextView
+import org.hamcrest.Matcher
+import ru.yurii.testingworkshopapp.R
+import ru.yurii.testingworkshopapp.tasklist.TaskListFragment
+
+object TaskListScreen : KScreen<TaskListScreen>() {
+    override val layoutId: Int = R.layout.task_list_fragment
+    override val viewClass: Class<*> = TaskListFragment::class.java
+
+    val projectButton = KButton { withId(R.id.currentProject) }
+    val taskList = KRecyclerView({ withId(R.id.taskList) }, { itemType { TaskItem(it) } })
+    val splash = KImageView { withId(R.id.splash) }
+
+    class TaskItem(parent: Matcher<View>) : KRecyclerItem<TaskItem>(parent) {
+        val title = KTextView(parent) { withId(R.id.title) }
+        val bullet = KImageView(parent) { withId(R.id.bullet) }
+    }
+}
+```
+
+```kotlin
+package ru.yurii.testingworkshopapp.screen
+
+import android.view.View
+import com.kaspersky.kaspresso.screens.KScreen
+import io.github.kakaocup.kakao.recycler.KRecyclerItem
+import io.github.kakaocup.kakao.recycler.KRecyclerView
+import io.github.kakaocup.kakao.text.KTextView
+import org.hamcrest.Matcher
+import ru.yurii.testingworkshopapp.R
+import ru.yurii.testingworkshopapp.projectlist.ChooseProjectDialogFragment
+
+object ChooseProjectScreen : KScreen<ChooseProjectScreen>() {
+    override val layoutId: Int = R.layout.choose_project_dialog_fragment
+    override val viewClass: Class<*> = ChooseProjectDialogFragment::class.java
+
+    val list = KRecyclerView({ withId(R.id.list) }, { itemType { ProjectItem(it) } })
+
+    class ProjectItem(parent: Matcher<View>) : KRecyclerItem<ProjectItem>(parent) {
+        val title = KTextView { withId(R.id.title) }
     }
 }
 ```
