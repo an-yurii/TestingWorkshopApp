@@ -24,6 +24,8 @@
 
     Унаследовать от `TasksForProjectUseCase`, добавить реализацию для тестов.
 
+    > Обратите внимание на package: `ru.yurii.testingworkshopapp.data.Task`
+
     ```kotlin
     class TasksForProjectUseCaseStub : TasksForProjectUseCase {
         var resultProvider: () -> Single<List<Task>> = { Single.just(emptyList()) }
@@ -228,6 +230,8 @@
 
 В результате у вас должно получиться что-то похожее на:
 
+### Тест класс
+
 ```kotlin
 package ru.yurii.testingworkshopapp.tasklist.viewmodel
 
@@ -318,5 +322,35 @@ class TaskListViewModelImplTest {
         priority = priority,
         colorRes = colorRes
     )
+}
+```
+
+### Stubs
+
+```kotlin
+package ru.yurii.testingworkshopapp.stub
+
+import io.reactivex.Single
+import ru.yurii.testingworkshopapp.data.Project
+import ru.yurii.testingworkshopapp.data.usecase.GetAllProjectsUseCase
+
+class GetAllProjectsUseCaseStub : GetAllProjectsUseCase {
+    var resultProvider: () -> Single<List<Project>> = { Single.just(emptyList()) }
+
+    override fun invoke(): Single<List<Project>> = resultProvider()
+}
+```
+
+```kotlin
+package ru.yurii.testingworkshopapp.stub
+
+import io.reactivex.Single
+import ru.yurii.testingworkshopapp.data.Task
+import ru.yurii.testingworkshopapp.data.usecase.TasksForProjectUseCase
+
+class TasksForProjectUseCaseStub : TasksForProjectUseCase {
+    var resultProvider: () -> Single<List<Task>> = { Single.just(emptyList()) }
+
+    override fun invoke(projectId: Long): Single<List<Task>> = resultProvider()
 }
 ```
