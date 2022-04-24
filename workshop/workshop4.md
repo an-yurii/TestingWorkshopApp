@@ -22,6 +22,21 @@
 
 ## Тест "для пустого списка отображается placeholder"
 
+### Дополнить Screen (Page Object)
+
+- Добавить элемент: "Плейс холдер"
+
+  ![Project navigation](images/task-screen-placeholder.png)
+
+    ```kotlin
+    object TaskListScreen : KScreen<TaskListScreen>() {
+        ...
+        val taskList = ...
+        val placeholder = KImageView { withId(R.id.placeholder) }
+        ...
+    }
+    ```
+
 ### Перенаправить запросы на Mock сервер
 
 - Добавить правило для запуска Mock сервера
