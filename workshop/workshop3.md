@@ -376,7 +376,6 @@ object TaskListScreen : KScreen<TaskListScreen>() {
 
     val projectButton = KButton { withId(R.id.currentProject) }
     val taskList = KRecyclerView({ withId(R.id.taskList) }, { itemType { TaskItem(it) } })
-    val splash = KImageView { withId(R.id.splash) }
 
     class TaskItem(parent: Matcher<View>) : KRecyclerItem<TaskItem>(parent) {
         val title = KTextView(parent) { withId(R.id.title) }
