@@ -28,10 +28,7 @@ class TaskListIntegrationTest : TestCase() {
 
         ActivityScenario.launch(MainActivity::class.java)
 
-        step("Отображается название проекта") {
-            TaskListScreen.projectButton.hasText("Inbox (local)")
-        }
-        step("Отображается сплеш") {
+        step("Отображается плейс холдер") {
             TaskListScreen.placeholder {
                 isVisible()
                 hasDrawable(R.drawable.ic_all_done)
