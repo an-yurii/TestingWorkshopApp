@@ -81,25 +81,6 @@
     )
     ```
 
-- Создать фабричный метод `createTask(...)` в классе `TaskListViewModelImplTest`
-    ```kotlin
-    private fun createTask(
-        id: Long = 0L,
-        projectId: Long = 0L,
-        title: String = "",
-        order: Int = 0,
-        priority: Int = 0,
-        colorRes: Int = 0
-    ): Task = Task(
-        id = id,
-        projectId = projectId,
-        title = title,
-        order = order,
-        priority = priority,
-        colorRes = colorRes
-    )
-    ```
-
 - Добавить пустой метод в класс `TaskListViewModelImplTest`
     ```kotlin
     @Test
@@ -156,7 +137,26 @@
 
 - Запустить тест
 
-## Тест "метод `loadTasksForProject` по умолчанию позвращает список задач"
+## Тест "метод `loadTasksForProject` по умолчанию возвращает список задач"
+
+- Создать фабричный метод `createTask(...)` в классе `TaskListViewModelImplTest`
+    ```kotlin
+    private fun createTask(
+        id: Long = 0L,
+        projectId: Long = 0L,
+        title: String = "",
+        order: Int = 0,
+        priority: Int = 0,
+        colorRes: Int = 0
+    ): Task = Task(
+        id = id,
+        projectId = projectId,
+        title = title,
+        order = order,
+        priority = priority,
+        colorRes = colorRes
+    )
+    ```
 
 - Добавить еще один пустой метод
     ```kotlin
