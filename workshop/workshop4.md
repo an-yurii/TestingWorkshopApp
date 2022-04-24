@@ -130,7 +130,7 @@
     }
     ```
 
-- Проверить атрибуты списка задач 
+- Проверить отсутствие отображения списка задач 
     ```kotlin
     @Test
     fun showPlaceholder_WhenTaskListIsEmpty() = run {
