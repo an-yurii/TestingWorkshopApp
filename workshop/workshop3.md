@@ -63,6 +63,8 @@
 
     ![Project navigation](images/task-screen-task-item.png)  
 
+    > Обратите внимание на package: `org.hamcrest.Matcher`
+
     ```kotlin
     object TaskListScreen : KScreen<TaskListScreen>() {
         ...
