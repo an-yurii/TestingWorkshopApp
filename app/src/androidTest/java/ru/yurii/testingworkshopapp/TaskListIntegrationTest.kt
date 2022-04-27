@@ -3,6 +3,7 @@ package ru.yurii.testingworkshopapp
 import androidx.test.core.app.ActivityScenario
 import com.kaspersky.kaspresso.testcases.api.testcase.TestCase
 import okhttp3.mockwebserver.MockWebServer
+import org.junit.After
 import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
@@ -16,7 +17,13 @@ class TaskListIntegrationTest : TestCase() {
 
     @Before
     fun setUp() {
-        ComponentProvider.appComponent().apiUrlProvider().url = mockServer.url("/").toString()
+        val appComponent = ComponentProvider.appComponentHolder().get()
+        appComponent.apiUrlProvider().url = mockServer.url("/").toString()
+    }
+
+    @After
+    fun tearDown() {
+        ComponentProvider.appComponentHolder().reset()
     }
 
     @Test
