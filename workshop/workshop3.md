@@ -30,17 +30,17 @@
 
 - Добавить класс `TaskListScreen` в созданный пакет `screen`
 
-    - Создать Singleton (использовать ключевое слово `object`)
+    - Создать Class (использовать ключевое слово `class`)
     - Унаследовать от `KScreen` и типизировать `TaskListScreen`
   
     ```kotlin
-    object TaskListScreen : KScreen<TaskListScreen>() {
+    class TaskListScreen : KScreen<TaskListScreen>() {
     }
     ```
 
 - Переопределить ссылку на разметку и класс
     ```kotlin
-    object TaskListScreen : KScreen<TaskListScreen>() {
+    class TaskListScreen : KScreen<TaskListScreen>() {
         override val layoutId: Int = R.layout.task_list_fragment
         override val viewClass: Class<*> = TaskListFragment::class.java
     }
@@ -51,7 +51,7 @@
     ![Project navigation](images/task-screen-project-button.png)
 
     ```kotlin
-    object TaskListScreen : KScreen<TaskListScreen>() {
+    class TaskListScreen : KScreen<TaskListScreen>() {
         ...
         override val viewClass: Class<*> = ...
     
@@ -66,7 +66,7 @@
     > Обратите внимание на package: `org.hamcrest.Matcher`
 
     ```kotlin
-    object TaskListScreen : KScreen<TaskListScreen>() {
+    class TaskListScreen : KScreen<TaskListScreen>() {
         ...
         class TaskItem(parent: Matcher<View>) : KRecyclerItem<TaskItem>(parent) {
             val title = KTextView(parent) { withId(R.id.title) }
@@ -80,7 +80,7 @@
     ![Project navigation](images/task-screen-tasks.png)
 
     ```kotlin
-    object TaskListScreen : KScreen<TaskListScreen>() {
+    class TaskListScreen : KScreen<TaskListScreen>() {
         ...
         val projectButton = ...
         val taskList = KRecyclerView({ withId(R.id.taskList) }, { itemType { TaskItem(it) } })
@@ -120,9 +120,10 @@
     @Test
     fun showTasksForFirstProject_ByDefault() = run {
         ActivityScenario.launch(...)
+        val taskListScreen = TaskListScreen()
 
         step("Отображается название проекта") {
-            TaskListScreen.projectButton.hasText("Inbox")
+            taskListScreen.projectButton.hasText("Inbox")
         }
     }
     ```
@@ -134,7 +135,7 @@
         ...
         step("Отображается название проекта") { ... }
         step("Отображается список задач") {
-            TaskListScreen.taskList.hasSize(12)
+            taskListScreen.taskList.hasSize(12)
         }
     }
     ```
@@ -147,8 +148,8 @@
         fun showTasksForFirstProject_ByDefault() = run {
             ...
             step("Отображается список задач") {
-                TaskListScreen.taskList.hasSize(...)
-                TaskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
+                taskListScreen.taskList.hasSize(...)
+                taskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
                 }
             }
         }
@@ -159,7 +160,7 @@
         @Test
         fun showTasksForFirstProject_ByDefault() = run {
             ...
-                TaskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
+                taskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
                     title.hasText("TickTick for embedded calendars and timers.")
                 }
             ...
@@ -171,7 +172,7 @@
         @Test
         fun showTasksForFirstProject_ByDefault() = run {
             ...
-                TaskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
+                taskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
                     title.hasText(...)
                     bullet {
                         isDisplayed()
@@ -192,17 +193,17 @@
 
 - Добавить класс `ChooseProjectScreen` в созданный пакет `screen`
 
-  - Создать Singleton (использовать ключевое слово `object`)
+  - Создать Class (использовать ключевое слово `class`)
   - Унаследовать от `KScreen` и типизировать `ChooseProjectScreen`
     
     ```kotlin
-    object ChooseProjectScreen : KScreen<ChooseProjectScreen>() {
+    class ChooseProjectScreen : KScreen<ChooseProjectScreen>() {
     }
     ```
 
 - Переопределить ссылку на разметку и класс
     ```kotlin
-    object ChooseProjectScreen : KScreen<ChooseProjectScreen>() {
+    class ChooseProjectScreen : KScreen<ChooseProjectScreen>() {
         override val layoutId: Int = R.layout.choose_project_dialog_fragment
         override val viewClass: Class<*> = ChooseProjectDialogFragment::class.java
     }
@@ -210,7 +211,7 @@
 
 - Описать элемент списка
     ```kotlin
-    object ChooseProjectScreen : KScreen<ChooseProjectScreen>() {
+    class ChooseProjectScreen : KScreen<ChooseProjectScreen>() {
         ...
         class ProjectItem(parent: Matcher<View>) : KRecyclerItem<ProjectItem>(parent) {
             val title = KTextView { withId(R.id.title) }
@@ -223,7 +224,7 @@
   ![Project navigation](images/project-screen-list.png)
 
     ```kotlin
-    object ChooseProjectScreen : KScreen<ChooseProjectScreen>() {
+    class ChooseProjectScreen : KScreen<ChooseProjectScreen>() {
         ...
         override val viewClass: Class<*> = ...
     
@@ -260,9 +261,11 @@
         @Test
         fun tasksAreReplaced_AfterProjectIsChosen() = run {
             ActivityScenario.launch(...)
+            val taskListScreen = TaskListScreen()
+            val chooseProjectScreen = ChooseProjectScreen()
     
             step("Выбор проекта") {
-                TaskListScreen.projectButton.click()
+                taskListScreen.projectButton.click()
             }
         }
         ```
@@ -272,8 +275,8 @@
         @Test
         fun tasksAreReplaced_AfterProjectIsChosen() = run {
             step("Выбор проекта") {
-                TaskListScreen ...
-                ChooseProjectScreen.list.childAt<ChooseProjectScreen.ProjectItem>(4) { click() }
+                taskListScreen ...
+                chooseProjectScreen.list.childAt<ChooseProjectScreen.ProjectItem>(4) { click() }
             }
         }
         ```
@@ -286,7 +289,7 @@
         fun tasksAreReplaced_AfterProjectIsChosen() = run {
             step("Выбор проекта") { ... }
             step("Отображаются задачи выбранного проекта") {
-                TaskListScreen.projectButton.hasText("Try Boards")
+                taskListScreen.projectButton.hasText("Try Boards")
             }
         }
         ```
@@ -296,8 +299,8 @@
         @Test
         fun tasksAreReplaced_AfterProjectIsChosen() = run {
             step("Отображаются задачи выбранного проекта") {
-                TaskListScreen.projectButton ...
-                TaskListScreen.taskList.hasSize(3)
+                taskListScreen.projectButton ...
+                taskListScreen.taskList.hasSize(3)
             }
         }
         ```
@@ -324,13 +327,14 @@ class TaskListTest : TestCase() {
     @Test
     fun showTasksForFirstProject_ByDefault() = run {
         ActivityScenario.launch(MainActivity::class.java)
+        val taskListScreen = TaskListScreen()
 
         step("Отображается название проекта") {
-            TaskListScreen.projectButton.hasText("Inbox")
+            taskListScreen.projectButton.hasText("Inbox")
         }
         step("Отображается список задач") {
-            TaskListScreen.taskList.hasSize(12)
-            TaskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
+            taskListScreen.taskList.hasSize(12)
+            taskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
                 title.hasText("TickTick for embedded calendars and timers.")
                 bullet {
                     isDisplayed()
@@ -343,14 +347,16 @@ class TaskListTest : TestCase() {
     @Test
     fun tasksAreReplaced_AfterProjectIsChosen() = run {
         ActivityScenario.launch(MainActivity::class.java)
+        val taskListScreen = TaskListScreen()
+        val chooseProjectScreen = ChooseProjectScreen()
 
         step("Выбор проекта") {
-            TaskListScreen.projectButton.click()
-            ChooseProjectScreen.list.childAt<ChooseProjectScreen.ProjectItem>(4) { click() }
+            taskListScreen.projectButton.click()
+            chooseProjectScreen.list.childAt<ChooseProjectScreen.ProjectItem>(4) { click() }
         }
         step("Отображаются задачи выбранного проекта") {
-            TaskListScreen.projectButton.hasText("Try Boards")
-            TaskListScreen.taskList.hasSize(3)
+            taskListScreen.projectButton.hasText("Try Boards")
+            taskListScreen.taskList.hasSize(3)
         }
     }
 }
@@ -372,7 +378,7 @@ import org.hamcrest.Matcher
 import ru.yurii.testingworkshopapp.R
 import ru.yurii.testingworkshopapp.tasklist.TaskListFragment
 
-object TaskListScreen : KScreen<TaskListScreen>() {
+class TaskListScreen : KScreen<TaskListScreen>() {
     override val layoutId: Int = R.layout.task_list_fragment
     override val viewClass: Class<*> = TaskListFragment::class.java
 
@@ -398,7 +404,7 @@ import org.hamcrest.Matcher
 import ru.yurii.testingworkshopapp.R
 import ru.yurii.testingworkshopapp.projectlist.ChooseProjectDialogFragment
 
-object ChooseProjectScreen : KScreen<ChooseProjectScreen>() {
+class ChooseProjectScreen : KScreen<ChooseProjectScreen>() {
     override val layoutId: Int = R.layout.choose_project_dialog_fragment
     override val viewClass: Class<*> = ChooseProjectDialogFragment::class.java
 
