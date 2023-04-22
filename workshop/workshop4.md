@@ -83,23 +83,23 @@
         }
         ```
 
-    - При обращении к `/v1/projects` загрузить тело запроса из файла `projects_list.json` 
+    - При обращении к `/v2/projects` загрузить тело запроса из файла `projects_list.json` 
         ```kotlin
         @Test
         fun showPlaceholder_WhenTaskListIsEmpty() = run {
             mockServer.dispatcher = MockRequestDispatcher().apply {
-                returnsForPath("/v1/projects") { setBody(loadFromAssets("projects_list.json")) }
+                returnsForPath("/v2/projects") { setBody(loadFromAssets("projects_list.json")) }
             }
         }
         ```
 
-    - При обращении к `/v1/tasks` в теле запроса вернуть строку `[]`
+    - При обращении к `/v2/tasks` в теле запроса вернуть строку `[]`
         ```kotlin
         @Test
         fun showPlaceholder_WhenTaskListIsEmpty() = run {
             mockServer.dispatcher = MockRequestDispatcher().apply {
-                returnsForPath("/v1/projects") ...
-                returnsForPath("/v1/tasks") { setBody("[]") }
+                returnsForPath("/v2/projects") ...
+                returnsForPath("/v2/tasks") { setBody("[]") }
             }
         }
         ```
@@ -174,8 +174,8 @@ class TaskListIntegrationTest : TestCase() {
     @Test
     fun showPlaceholder_WhenTaskListIsEmpty() = run {
         mockServer.dispatcher = MockRequestDispatcher().apply {
-            returnsForPath("/v1/projects") { setBody(loadFromAssets("projects_list.json")) }
-            returnsForPath("/v1/tasks") { setBody("[]") }
+            returnsForPath("/v2/projects") { setBody(loadFromAssets("projects_list.json")) }
+            returnsForPath("/v2/tasks") { setBody("[]") }
         }
 
         ActivityScenario.launch(MainActivity::class.java)
