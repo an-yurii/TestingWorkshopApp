@@ -29,8 +29,8 @@ class TaskListIntegrationTest : TestCase() {
     @Test
     fun showPlaceholder_WhenTaskListIsEmpty() = run {
         mockServer.dispatcher = MockRequestDispatcher().apply {
-            returnsForPath("/v1/projects") { setBody(loadFromAssets("projects_list.json")) }
-            returnsForPath("/v1/tasks") { setBody("[]") }
+            returnsForPath("/v2/projects") { setBody(loadFromAssets("projects_list.json")) }
+            returnsForPath("/v2/tasks") { setBody("[]") }
         }
 
         ActivityScenario.launch(MainActivity::class.java)
