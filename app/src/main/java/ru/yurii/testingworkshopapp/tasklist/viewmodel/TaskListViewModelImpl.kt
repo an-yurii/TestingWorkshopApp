@@ -1,54 +1,51 @@
 package ru.yurii.testingworkshopapp.tasklist.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import io.reactivex.schedulers.Schedulers
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import ru.yurii.testingworkshopapp.data.Project
 import ru.yurii.testingworkshopapp.data.usecase.GetAllProjectsUseCase
 import ru.yurii.testingworkshopapp.data.usecase.TasksForProjectUseCase
+import ru.yurii.testingworkshopapp.utils.extensions.runCatchingNonCancellation
 
 internal class TaskListViewModelImpl(
     private val getAllProjectsUseCase: GetAllProjectsUseCase,
     private val tasksForProjectUseCase: TasksForProjectUseCase
 ) : TaskListViewModel() {
-    override val tasksStateOutput = MutableLiveData<TaskListState>()
-    override val projectName = MutableLiveData<ProjectState>()
+    override val tasksStateOutput = MutableStateFlow<TaskListState>(TaskListState.Loading)
+    override val projectName = MutableStateFlow<ProjectState>(ProjectState.Loading)
 
     override fun load() {
         loadFirstProject()
     }
 
     override fun loadTasksForProject(project: Project) {
-        projectName.postValue(ProjectState.Loaded(project))
+        projectName.update { ProjectState.Loaded(project) }
         loadTasks(project.id)
     }
 
     private fun loadFirstProject() {
-        getAllProjectsUseCase()
-            .subscribeOn(Schedulers.io())
-            .subscribe(
-                { projects ->
-                    val firstProject = projects.first()
-                    projectName.postValue(ProjectState.Loaded(firstProject))
-                    loadTasks(firstProject.id)
-                },
-                { throwable -> Log.w("Error", throwable) }
-            )
-            .disposeOnFinish()
+        viewModelScope.launch {
+            runCatchingNonCancellation {
+                val projects = getAllProjectsUseCase()
+                loadTasksForProject(projects.first())
+            }.onFailure { throwable ->
+                Log.w("Error", throwable)
+            }
+        }
     }
 
     private fun loadTasks(projectId: Long) {
-        tasksForProjectUseCase(projectId)
-            .subscribeOn(Schedulers.io())
-            .subscribe(
-                { items ->
-                    tasksStateOutput.postValue(TaskListState.Loaded(items))
-                },
-                { throwable ->
-                    Log.w("Error", throwable)
-                    tasksStateOutput.postValue(TaskListState.FailedToLoad(throwable))
-                }
-            )
-            .disposeOnFinish()
+        viewModelScope.launch {
+            runCatchingNonCancellation {
+                val tasks = tasksForProjectUseCase(projectId)
+                tasksStateOutput.emit(TaskListState.Loaded(tasks))
+            }.onFailure { throwable ->
+                Log.w("Error", throwable)
+                tasksStateOutput.emit(TaskListState.FailedToLoad(throwable))
+            }
+        }
     }
 }

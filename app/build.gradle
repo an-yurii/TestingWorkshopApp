@@ -38,6 +38,7 @@ android {
 }
 
 ext {
+    coroutines_version = "1.6.4"
     lifecycle_version = "2.6.1"
     retrofit_version = "2.9.0"
     okhhtp_version = "4.10.0"
@@ -56,20 +57,17 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
 
     implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
-    implementation "com.squareup.retrofit2:adapter-rxjava2:$retrofit_version"
     implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
     implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0'
 
     implementation "com.squareup.okhttp3:okhttp:$okhhtp_version"
     implementation "com.squareup.okhttp3:logging-interceptor:$okhhtp_version"
 
-    implementation "io.reactivex.rxjava2:rxjava:2.2.21"
-    implementation "com.github.akarnokd:rxjava2-extensions:0.20.10"
-    implementation "io.reactivex.rxjava2:rxandroid:2.1.1"
-    implementation "io.reactivex.rxjava2:rxkotlin:2.4.0"
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
 
     testImplementation "junit:junit:4.13.2"
     testImplementation "androidx.arch.core:core-testing:2.2.0"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
 
     androidTestImplementation "androidx.test.ext:junit:1.1.5"
     androidTestImplementation "com.kaspersky.android-components:kaspresso:1.5.1"

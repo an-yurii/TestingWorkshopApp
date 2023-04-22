@@ -1,19 +1,14 @@
 package ru.yurii.testingworkshopapp.data.usecase
 
-import io.reactivex.Single
 import ru.yurii.testingworkshopapp.data.Project
 import ru.yurii.testingworkshopapp.data.TodoistRepository
 
 interface GetAllProjectsUseCase {
-    operator fun invoke(): Single<List<Project>>
+    suspend operator fun invoke(): List<Project>
 }
 
 class GetAllProjectsUseCaseImpl(
     private val repository: TodoistRepository
 ) : GetAllProjectsUseCase {
-    override fun invoke(): Single<List<Project>> {
-        return repository.projects().map { items ->
-            items.sortedBy { it.order }
-        }
-    }
+    override suspend fun invoke(): List<Project> = repository.projects().sortedBy { it.order }
 }

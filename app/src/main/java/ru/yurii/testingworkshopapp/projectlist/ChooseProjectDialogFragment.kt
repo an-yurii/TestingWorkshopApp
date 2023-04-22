@@ -8,8 +8,12 @@ import android.widget.Toast
 import androidx.core.os.bundleOf
 import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.yurii.testingworkshopapp.appComponent
 import ru.yurii.testingworkshopapp.databinding.ChooseProjectDialogFragmentBinding
 import ru.yurii.testingworkshopapp.projectlist.viewmodel.ChooseProjectViewModel
@@ -57,15 +61,19 @@ class ChooseProjectDialogFragment : BottomSheetDialogFragment() {
     }
 
     private fun loadDataToAdapter(adapter: ProjectListAdapter) {
-        viewModel.projectsStateOutput.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is ChooseProjectViewState.Loaded -> adapter.submitList(state.projects)
-                is ChooseProjectViewState.FailedToLoad -> Toast.makeText(
-                    requireContext(),
-                    state.exception.message!!,
-                    Toast.LENGTH_SHORT
-                ).show()
-            }.exhaustive
-        }
+        viewModel.projectsStateOutput
+            .flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                when (state) {
+                    ChooseProjectViewState.Loading -> Unit
+                    is ChooseProjectViewState.Loaded -> adapter.submitList(state.projects)
+                    is ChooseProjectViewState.FailedToLoad -> Toast.makeText(
+                        requireContext(),
+                        state.exception.message!!,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }.exhaustive
+            }
+            .launchIn(lifecycleScope)
     }
 }

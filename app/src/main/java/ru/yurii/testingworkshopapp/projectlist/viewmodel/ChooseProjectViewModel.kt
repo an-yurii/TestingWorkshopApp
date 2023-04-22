@@ -1,11 +1,11 @@
 package ru.yurii.testingworkshopapp.projectlist.viewmodel
 
-import androidx.lifecycle.LiveData
-import ru.yurii.testingworkshopapp.utils.ViewModelRx
+import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.StateFlow
 
-internal abstract class ChooseProjectViewModel : ViewModelRx() {
+internal abstract class ChooseProjectViewModel : ViewModel() {
 
-    abstract val projectsStateOutput: LiveData<ChooseProjectViewState>
+    abstract val projectsStateOutput: StateFlow<ChooseProjectViewState>
 
     abstract fun load()
 }

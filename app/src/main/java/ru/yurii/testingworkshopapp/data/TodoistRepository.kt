@@ -1,29 +1,20 @@
 package ru.yurii.testingworkshopapp.data
 
-import io.reactivex.Single
 import ru.yurii.testingworkshopapp.data.api.ProjectResponse
 import ru.yurii.testingworkshopapp.data.api.TaskResponse
 import ru.yurii.testingworkshopapp.data.api.TodoistApiService
 
 interface TodoistRepository {
-    fun projects(): Single<List<Project>>
-    fun tasks(): Single<List<Task>>
+    suspend fun projects(): List<Project>
+    suspend fun tasks(): List<Task>
 }
 
 class TodoistRepositoryImpl(
     private val api: TodoistApiService
 ) : TodoistRepository {
-    override fun projects(): Single<List<Project>> {
-        return api.projects().map { items ->
-            items.map { it.toProject() }
-        }
-    }
+    override suspend fun projects(): List<Project> = api.projects().map { it.toProject() }
 
-    override fun tasks(): Single<List<Task>> {
-        return api.tasks().map { items ->
-            items.map { it.toTask() }
-        }
-    }
+    override suspend fun tasks(): List<Task> = api.tasks().map { it.toTask() }
 
     private fun TaskResponse.toTask() = TaskMapper.responseToTask(this)
     private fun ProjectResponse.toProject() = ProjectMapper.responseToProject(this)

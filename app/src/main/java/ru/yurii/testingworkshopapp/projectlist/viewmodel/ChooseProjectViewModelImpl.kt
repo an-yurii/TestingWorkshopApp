@@ -1,27 +1,25 @@
 package ru.yurii.testingworkshopapp.projectlist.viewmodel
 
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.launch
 import ru.yurii.testingworkshopapp.data.usecase.GetAllProjectsUseCase
+import ru.yurii.testingworkshopapp.utils.extensions.runCatchingNonCancellation
 
 internal class ChooseProjectViewModelImpl(
     private val getAllProjectsUseCase: GetAllProjectsUseCase
 ) : ChooseProjectViewModel() {
-    override val projectsStateOutput = MutableLiveData<ChooseProjectViewState>()
+    override val projectsStateOutput = MutableStateFlow<ChooseProjectViewState>(ChooseProjectViewState.Loading)
 
     override fun load() {
-        getAllProjectsUseCase()
-            .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe(
-                { items -> projectsStateOutput.value = ChooseProjectViewState.Loaded(items) },
-                { throwable ->
-                    Log.w("Error", throwable)
-                    projectsStateOutput.value = ChooseProjectViewState.FailedToLoad(throwable)
-                }
-            )
-            .disposeOnFinish()
+        viewModelScope.launch {
+            runCatchingNonCancellation {
+                projectsStateOutput.value = ChooseProjectViewState.Loaded(getAllProjectsUseCase())
+            }.onFailure { throwable ->
+                Log.w("Error", throwable)
+                projectsStateOutput.value = ChooseProjectViewState.FailedToLoad(throwable)
+            }
+        }
     }
 }

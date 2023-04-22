@@ -1,6 +1,5 @@
 package ru.yurii.testingworkshopapp.stub
 
-import io.reactivex.Single
 import ru.yurii.testingworkshopapp.data.Project
 import ru.yurii.testingworkshopapp.data.Task
 import ru.yurii.testingworkshopapp.data.TodoistRepository
@@ -10,9 +9,9 @@ import ru.yurii.testingworkshopapp.data.TodoistRepository
  */
 class TodoistRepositoryStub : TodoistRepository {
 
-    var tasksProvider: () -> Single<List<Task>> = { Single.just(emptyList()) }
+    var tasksProvider: () -> List<Task> = { emptyList() }
 
-    override fun projects(): Single<List<Project>>  = Single.just(emptyList())
+    override suspend fun projects(): List<Project>  = emptyList()
 
-    override fun tasks(): Single<List<Task>> = tasksProvider()
+    override suspend fun tasks(): List<Task> = tasksProvider()
 }

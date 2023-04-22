@@ -242,7 +242,6 @@ import ru.yurii.testingworkshopapp.data.usecase.GetAllProjectsUseCase
 import ru.yurii.testingworkshopapp.data.usecase.TasksForProjectUseCase
 import ru.yurii.testingworkshopapp.stub.GetAllProjectsUseCaseStub
 import ru.yurii.testingworkshopapp.stub.TasksForProjectUseCaseStub
-import ru.yurii.testingworkshopapp.util.RxRule
 
 class TaskListViewModelImplTest {
 

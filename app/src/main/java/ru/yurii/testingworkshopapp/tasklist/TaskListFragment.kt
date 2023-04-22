@@ -8,7 +8,11 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
+import androidx.lifecycle.flowWithLifecycle
+import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.LinearLayoutManager
+import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.onEach
 import ru.yurii.testingworkshopapp.appComponent
 import ru.yurii.testingworkshopapp.data.Project
 import ru.yurii.testingworkshopapp.databinding.TaskListFragmentBinding
@@ -66,15 +70,19 @@ class TaskListFragment : Fragment() {
             loadDataToAdapter(taskListAdapter)
         }
 
-        viewModel.projectName.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is ProjectState.Loaded -> {
-                    binding.currentProject.visibility = View.VISIBLE
-                    binding.currentProject.text = state.project.title
+        viewModel.projectName
+            .flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                when (state) {
+                    is ProjectState.Loaded -> {
+                        binding.currentProject.visibility = View.VISIBLE
+                        binding.currentProject.text = state.project.title
+                    }
+                    is ProjectState.FailedToLoad -> showError(state.exception)
+                    ProjectState.Loading -> Unit
                 }
-                is ProjectState.FailedToLoad -> showError(state.exception)
             }
-        }
+            .launchIn(lifecycleScope)
         viewModel.load()
     }
 
@@ -87,16 +95,20 @@ class TaskListFragment : Fragment() {
     }
 
     private fun loadDataToAdapter(adapter: TaskListAdapter) {
-        viewModel.tasksStateOutput.observe(viewLifecycleOwner) { state ->
-            when (state) {
-                is TaskListState.Loaded -> {
-                    adapter.submitList(state.tasks)
-                    binding.taskList.visibility = if (state.tasks.isEmpty()) View.GONE else View.VISIBLE
-                    binding.placeholder.visibility = if (state.tasks.isEmpty()) View.VISIBLE else View.GONE
-                }
-                is TaskListState.FailedToLoad -> showError(state.exception)
-            }.exhaustive
-        }
+        viewModel.tasksStateOutput
+            .flowWithLifecycle(lifecycle)
+            .onEach { state ->
+                when (state) {
+                    is TaskListState.Loaded -> {
+                        adapter.submitList(state.tasks)
+                        binding.taskList.visibility = if (state.tasks.isEmpty()) View.GONE else View.VISIBLE
+                        binding.placeholder.visibility = if (state.tasks.isEmpty()) View.VISIBLE else View.GONE
+                    }
+                    is TaskListState.FailedToLoad -> showError(state.exception)
+                    TaskListState.Loading -> Unit
+                }.exhaustive
+            }
+            .launchIn(lifecycleScope)
     }
 
 }

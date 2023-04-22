@@ -1,13 +1,13 @@
 package ru.yurii.testingworkshopapp.tasklist.viewmodel
 
-import androidx.lifecycle.LiveData
+import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.StateFlow
 import ru.yurii.testingworkshopapp.data.Project
-import ru.yurii.testingworkshopapp.utils.ViewModelRx
 
-internal abstract class TaskListViewModel : ViewModelRx() {
+internal abstract class TaskListViewModel : ViewModel() {
 
-    abstract val tasksStateOutput: LiveData<TaskListState>
-    abstract val projectName: LiveData<ProjectState>
+    abstract val tasksStateOutput: StateFlow<TaskListState>
+    abstract val projectName: StateFlow<ProjectState>
 
     abstract fun load()
     abstract fun loadTasksForProject(project: Project)
