@@ -8,7 +8,6 @@ data class ProjectResponse(
     val id: Long,
     val name: String,
     val order: Int = 0,
-    val color: Int,
     @SerialName("inbox_project")
     val inboxProject: Boolean = false
 )

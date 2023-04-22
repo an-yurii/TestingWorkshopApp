@@ -51,7 +51,7 @@ class NetworkModule(
 class ApiKeyInterceptor: Interceptor {
 
     companion object {
-        private const val API_KEY = "ab1b875a2120cbcc3bd365ae3baaced1fbec05c5"
+        private const val API_KEY = "e74f67935d5ea6bad8a3aaf07253adc30a61b350"
     }
 
     override fun intercept(chain: Interceptor.Chain): Response {
