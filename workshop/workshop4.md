@@ -144,6 +144,59 @@
 
 - Запустить тест
 
+## Настроить оркестрацию
+
+Запустить все тесты из контекстного меню директории **androidTest**. 
+
+![Launch all tests](images/launch-all-android-tests.png)
+
+Часть тестов завершится с ошибкой. 
+
+![Launch all tests](images/some-of-android-tests-failed.png)
+
+Воспользуемся оркестратором, чтобы изолировать тесты друг от друга. Необходимо внести изменения
+в файл `build.gradle` модуля `:app`.
+
+- Добавить дополнительные аргументы для раннера `testInstrumentationRunnerArguments`
+
+    ```kotlin
+    android {
+        ...
+        defaultConfig {
+            ...
+            testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+            testInstrumentationRunnerArguments clearPackageData: 'true'
+        }
+        ...
+    }
+    ```
+
+- Добавить секцию `testOptions`
+
+    ```kotlin
+    android {
+        ...
+        defaultConfig { ... }
+
+        testOptions {
+            execution 'ANDROIDX_TEST_ORCHESTRATOR'
+        }
+    }
+    ```
+
+- Добавить зависимости в блок `dependencies`
+
+    ```kotlin
+    dependencies {
+        ...
+        androidTestImplementation 'androidx.test:runner:1.5.2'
+        androidTestUtil 'androidx.test:orchestrator:1.4.2'
+    }
+    ```
+
+- Выполнить синхронизацию проекта в Android Studio с файлами Gradle
+- Повторно запустить все тесты 
+
 # Summary
 
 В результате у вас должно получиться что-то похожее на:
@@ -221,5 +274,92 @@ class TaskListScreen : KScreen<TaskListScreen>() {
         val title = KTextView(parent) { withId(R.id.title) }
         val bullet = KImageView(parent) { withId(R.id.bullet) }
     }
+}
+```
+
+### build.gradle
+
+```kotlin
+plugins {
+    id 'com.android.application'
+    id 'org.jetbrains.kotlin.android'
+    id 'org.jetbrains.kotlin.plugin.serialization'
+    id 'kotlin-parcelize'
+}
+
+android {
+    compileSdk 33
+
+    defaultConfig {
+        applicationId "ru.yurii.testingworkshopapp"
+        minSdk 24
+        targetSdk 33
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        testInstrumentationRunnerArguments clearPackageData: 'true'
+    }
+
+    testOptions {
+        execution 'ANDROIDX_TEST_ORCHESTRATOR'
+    }
+
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
+    kotlinOptions {
+        jvmTarget = '1.8'
+    }
+
+    buildFeatures {
+        viewBinding true
+    }
+}
+
+ext {
+    coroutines_version = "1.6.4"
+    lifecycle_version = "2.6.1"
+    retrofit_version = "2.9.0"
+    okhhtp_version = "4.10.0"
+}
+
+dependencies {
+
+    implementation 'androidx.core:core-ktx:1.10.0'
+    implementation 'androidx.fragment:fragment-ktx:1.5.7'
+    implementation 'androidx.appcompat:appcompat:1.6.1'
+    implementation 'com.google.android.material:material:1.8.0'
+    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
+    implementation 'androidx.recyclerview:recyclerview:1.3.0'
+
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-livedata-ktx:$lifecycle_version"
+
+    implementation "com.squareup.retrofit2:retrofit:$retrofit_version"
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.5.0"
+    implementation 'com.jakewharton.retrofit:retrofit2-kotlinx-serialization-converter:1.0.0'
+
+    implementation "com.squareup.okhttp3:okhttp:$okhhtp_version"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okhhtp_version"
+
+    implementation "org.jetbrains.kotlinx:kotlinx-coroutines-core:$coroutines_version"
+
+    testImplementation "junit:junit:4.13.2"
+    testImplementation "androidx.arch.core:core-testing:2.2.0"
+    testImplementation "org.jetbrains.kotlinx:kotlinx-coroutines-test:$coroutines_version"
+
+    androidTestImplementation "androidx.test.ext:junit:1.1.5"
+    androidTestImplementation "com.kaspersky.android-components:kaspresso:1.5.1"
+    androidTestImplementation "com.squareup.okhttp3:mockwebserver:$okhhtp_version"
+    androidTestImplementation 'androidx.test:runner:1.5.2'
+    androidTestUtil 'androidx.test:orchestrator:1.4.2'
 }
 ```

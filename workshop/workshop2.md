@@ -1,6 +1,6 @@
 # Workshop 2
 
-В рамках воркшопа вы напишите пару тестов для асинхронного кода на примере `RxJava` и `ViewModel` + `LiveData`.
+В рамках воркшопа вы напишите пару тестов для асинхронного кода на примере `Kotlin coroutines` и `ViewModel` + `StateFlow`.
 
 ## Подготовить stub'ы
 
@@ -14,9 +14,9 @@
 
     ```kotlin
     class GetAllProjectsUseCaseStub : GetAllProjectsUseCase {
-        var resultProvider: () -> Single<List<Project>> = { Single.just(emptyList()) }
+        var resultProvider: () -> List<Project> = { emptyList() }
 
-        override fun invoke(): Single<List<Project>> = resultProvider()
+        override suspend fun invoke(): List<Project> = resultProvider()
     }
     ```
 
@@ -28,9 +28,9 @@
 
     ```kotlin
     class TasksForProjectUseCaseStub : TasksForProjectUseCase {
-        var resultProvider: () -> Single<List<Task>> = { Single.just(emptyList()) }
+        var resultProvider: () -> List<Task> = { emptyList() }
 
-        override fun invoke(projectId: Long): Single<List<Task>> = resultProvider()
+        override suspend fun invoke(projectId: Long): List<Task> = resultProvider()
     }
     ```
 
@@ -55,7 +55,7 @@
         @get:Rule
         val viewModelRule = InstantTaskExecutorRule()
         @get:Rule
-        val rxRule = RxRule()
+        val mainDispatcherRule = MainDispatcherRule()
           
     }
     ```
@@ -84,9 +84,12 @@
     ```
 
 - Добавить пустой метод в класс `TaskListViewModelImplTest`
+
+    Оберните тело метода в `runTest`, чтобы протестировать `suspend` функции.
+
     ```kotlin
     @Test
-    fun `load by default returns first project`() {
+    fun `load by default returns first project`() = runTest {
 
     }
     ```
@@ -94,13 +97,9 @@
 - Создать инстанс `GetAllProjectsUseCaseStub` внутри добавленного метода и подготовить возвращаемые данные
     ```kotlin
     @Test
-    fun `load by default returns first project`() {
+    fun `load by default returns first project`() = runTest {
         val getAllProjectsUseCase = GetAllProjectsUseCaseStub().apply {
-            resultProvider = {
-                Single.just(
-                    listOf(createProject(title = "First"), createProject(title = "Second"))
-                )
-            }
+            resultProvider = { listOf(createProject(title = "First"), createProject(title = "Second")) }
         }
    }
     ```
@@ -108,7 +107,7 @@
 - Создать экземпляр `TaskListViewModel` с помощью фабричного метода `createViewModel`
     ```kotlin
     @Test
-    fun `load by default returns first project`() {
+    fun `load by default returns first project`() = runTest {
         val getAllProjectsUseCase = GetAllProjectsUseCaseStub().apply { ... }
         val viewModel = createViewModel(getAllProjectsUseCase = getAllProjectsUseCase)
     }
@@ -117,7 +116,7 @@
 - Добавить вызов `viewModel.load()`
     ```kotlin
     @Test
-    fun `load by default returns first project`() {
+    fun `load by default returns first project`() = runTest {
         ...
         val viewModel = ...
 
@@ -125,10 +124,10 @@
     }
     ```
 
-- Проверить содержимое `LiveData`
+- Проверить содержимое `StateFlow`
     ```kotlin
     @Test
-    fun `load by default returns first project`() {
+    fun `load by default returns first project`() = runTest {
         ...
         viewModel.load()
 
@@ -161,9 +160,12 @@
     ```
 
 - Добавить еще один пустой метод
+
+    Оберните тело метода в `runTest`, чтобы протестировать `suspend` функции.
+
     ```kotlin
     @Test
-    fun `loadTasksForProject by default returns task list`() {
+    fun `loadTasksForProject by default returns task list`() = runTest {
 
     }
     ```
@@ -171,7 +173,7 @@
 - Создать список задач внутри добавленного метода
     ```kotlin
     @Test
-    fun `loadTasksForProject by default returns task list`() {
+    fun `loadTasksForProject by default returns task list`() = runTest {
         val tasks = listOf(
             createTask(title = "First"),
             createTask(title = "Second"),
@@ -183,10 +185,10 @@
 - Создать инстанс `TasksForProjectUseCaseStub` и подготовить возвращаемые данные
     ```kotlin
     @Test
-    fun `loadTasksForProject by default returns task list`() {
+    fun `loadTasksForProject by default returns task list`() = runTest {
         val tasks = ...
         val useCase = TasksForProjectUseCaseStub().apply {
-            resultProvider = { Single.just(tasks) }
+            resultProvider = { tasks }
         }
     }
     ```
@@ -194,7 +196,7 @@
 - Создать экземпляр `TaskListViewModel` с помощью фабричного метода `createViewModel`
     ```kotlin
     @Test
-    fun `loadTasksForProject by default returns task list`() {
+    fun `loadTasksForProject by default returns task list`() = runTest {
         ...
         val useCase = TasksForProjectUseCaseStub().apply { ... }
         val viewModel = createViewModel(tasksForProjectUseCase = useCase)
@@ -204,7 +206,7 @@
 - Добавить вызов `viewModel.loadTasksForProject(...)`
     ```kotlin
     @Test
-    fun `loadTasksForProject by default returns task list`() {
+    fun `loadTasksForProject by default returns task list`() = runTest {
         ...
         val viewModel = ...
 
@@ -212,10 +214,10 @@
     }
     ```
 
-- Проверить содержимое `LiveData`
+- Проверить содержимое `StateFlow`
     ```kotlin
     @Test
-    fun `loadTasksForProject by default returns task list`() {
+    fun `loadTasksForProject by default returns task list`() = runTest {
         ...
         viewModel.loadTasksForProject(...)
 
@@ -236,7 +238,8 @@
 package ru.yurii.testingworkshopapp.tasklist.viewmodel
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import io.reactivex.Single
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.runTest
 import org.junit.Assert.assertEquals
 import org.junit.Rule
 import org.junit.Test
@@ -246,23 +249,20 @@ import ru.yurii.testingworkshopapp.data.usecase.GetAllProjectsUseCase
 import ru.yurii.testingworkshopapp.data.usecase.TasksForProjectUseCase
 import ru.yurii.testingworkshopapp.stub.GetAllProjectsUseCaseStub
 import ru.yurii.testingworkshopapp.stub.TasksForProjectUseCaseStub
-import ru.yurii.testingworkshopapp.util.RxRule
+import ru.yurii.testingworkshopapp.util.MainDispatcherRule
 
+@OptIn(ExperimentalCoroutinesApi::class)
 class TaskListViewModelImplTest {
 
     @get:Rule
     val viewModelRule = InstantTaskExecutorRule()
     @get:Rule
-    val rxRule = RxRule()
+    val mainDispatcherRule = MainDispatcherRule()
 
     @Test
-    fun `load by default returns first project`() {
+    fun `load by default returns first project`() = runTest {
         val getAllProjectsUseCase = GetAllProjectsUseCaseStub().apply {
-            resultProvider = {
-                Single.just(
-                    listOf(createProject(title = "First"), createProject(title = "Second"))
-                )
-            }
+            resultProvider = { listOf(createProject(title = "First"), createProject(title = "Second")) }
         }
         val viewModel = createViewModel(getAllProjectsUseCase = getAllProjectsUseCase)
 
@@ -273,14 +273,14 @@ class TaskListViewModelImplTest {
     }
 
     @Test
-    fun `loadTasksForProject by default returns task list`() {
+    fun `loadTasksForProject by default returns task list`() = runTest {
         val tasks = listOf(
             createTask(title = "First"),
             createTask(title = "Second"),
             createTask(title = "Third")
         )
         val useCase = TasksForProjectUseCaseStub().apply {
-            resultProvider = { Single.just(tasks) }
+            resultProvider = { tasks }
         }
         val viewModel = createViewModel(tasksForProjectUseCase = useCase)
 
@@ -322,35 +322,5 @@ class TaskListViewModelImplTest {
         priority = priority,
         colorRes = colorRes
     )
-}
-```
-
-### Stubs
-
-```kotlin
-package ru.yurii.testingworkshopapp.stub
-
-import io.reactivex.Single
-import ru.yurii.testingworkshopapp.data.Project
-import ru.yurii.testingworkshopapp.data.usecase.GetAllProjectsUseCase
-
-class GetAllProjectsUseCaseStub : GetAllProjectsUseCase {
-    var resultProvider: () -> Single<List<Project>> = { Single.just(emptyList()) }
-
-    override fun invoke(): Single<List<Project>> = resultProvider()
-}
-```
-
-```kotlin
-package ru.yurii.testingworkshopapp.stub
-
-import io.reactivex.Single
-import ru.yurii.testingworkshopapp.data.Task
-import ru.yurii.testingworkshopapp.data.usecase.TasksForProjectUseCase
-
-class TasksForProjectUseCaseStub : TasksForProjectUseCase {
-    var resultProvider: () -> Single<List<Task>> = { Single.just(emptyList()) }
-
-    override fun invoke(projectId: Long): Single<List<Task>> = resultProvider()
 }
 ```
