@@ -230,7 +230,7 @@
 
 # Summary
 
-В результате у вас должно получиться что-то похожее на:
+В результате у вас должно получиться что-то похожее.
 
 ### Тест класс
 
@@ -322,5 +322,33 @@ class TaskListViewModelImplTest {
         priority = priority,
         colorRes = colorRes
     )
+}
+```
+
+### Стабы
+
+```kotlin
+package ru.yurii.testingworkshopapp.stub
+
+import ru.yurii.testingworkshopapp.data.Project
+import ru.yurii.testingworkshopapp.data.usecase.GetAllProjectsUseCase
+
+class GetAllProjectsUseCaseStub : GetAllProjectsUseCase {
+    var resultProvider: () -> List<Project> = { emptyList() }
+
+    override suspend fun invoke(): List<Project> = resultProvider()
+}
+```
+
+```kotlin
+package ru.yurii.testingworkshopapp.stub
+
+import ru.yurii.testingworkshopapp.data.Task
+import ru.yurii.testingworkshopapp.data.usecase.TasksForProjectUseCase
+
+class TasksForProjectUseCaseStub : TasksForProjectUseCase {
+    var resultProvider: () -> List<Task> = { emptyList() }
+
+    override suspend fun invoke(projectId: Long): List<Task> = resultProvider()
 }
 ```
