@@ -29,7 +29,7 @@
   ![Project navigation](images/task-screen-placeholder.png)
 
     ```kotlin
-    object TaskListScreen : KScreen<TaskListScreen>() {
+    class TaskListScreen : KScreen<TaskListScreen>() {
         ...
         val taskList = ...
         val placeholder = KImageView { withId(R.id.placeholder) }
@@ -120,9 +120,10 @@
     fun showPlaceholder_WhenTaskListIsEmpty() = run {
         ...
         ActivityScenario.launch(...)
+        val taskListScreen = TaskListScreen()
 
         step("Отображается плейс холдер") {
-            TaskListScreen.placeholder {
+            taskListScreen.placeholder {
                 isVisible()
                 hasDrawable(R.drawable.ic_all_done)
             }
@@ -135,8 +136,8 @@
     @Test
     fun showPlaceholder_WhenTaskListIsEmpty() = run {
         step("Отображается плейс холдер") {
-            TaskListScreen.placeholder { ... }
-            TaskListScreen.taskList.isNotDisplayed()
+            taskListScreen.placeholder { ... }
+            taskListScreen.taskList.isNotDisplayed()
         }
     }
     ```
@@ -179,16 +180,16 @@ class TaskListIntegrationTest : TestCase() {
         }
 
         ActivityScenario.launch(MainActivity::class.java)
+        val taskListScreen = TaskListScreen()
 
         step("Отображается плейс холдер") {
-            TaskListScreen.placeholder {
+            taskListScreen.placeholder {
                 isVisible()
                 hasDrawable(R.drawable.ic_all_done)
             }
-            TaskListScreen.taskList.isNotDisplayed()
+            taskListScreen.taskList.isNotDisplayed()
         }
     }
-
 }
 ```
 
@@ -208,7 +209,7 @@ import org.hamcrest.Matcher
 import ru.yurii.testingworkshopapp.R
 import ru.yurii.testingworkshopapp.tasklist.TaskListFragment
 
-object TaskListScreen : KScreen<TaskListScreen>() {
+class TaskListScreen : KScreen<TaskListScreen>() {
     override val layoutId: Int = R.layout.task_list_fragment
     override val viewClass: Class<*> = TaskListFragment::class.java
 
