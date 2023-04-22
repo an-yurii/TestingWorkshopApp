@@ -11,7 +11,7 @@ import org.hamcrest.Matcher
 import ru.yurii.testingworkshopapp.R
 import ru.yurii.testingworkshopapp.tasklist.TaskListFragment
 
-object TaskListScreen : KScreen<TaskListScreen>() {
+class TaskListScreen : KScreen<TaskListScreen>() {
     override val layoutId: Int = R.layout.task_list_fragment
     override val viewClass: Class<*> = TaskListFragment::class.java
 

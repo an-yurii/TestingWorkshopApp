@@ -34,13 +34,14 @@ class TaskListIntegrationTest : TestCase() {
         }
 
         ActivityScenario.launch(MainActivity::class.java)
+        val taskListScreen = TaskListScreen()
 
         step("Отображается плейс холдер") {
-            TaskListScreen.placeholder {
+            taskListScreen.placeholder {
                 isVisible()
                 hasDrawable(R.drawable.ic_all_done)
             }
-            TaskListScreen.taskList.isNotDisplayed()
+            taskListScreen.taskList.isNotDisplayed()
         }
     }
 

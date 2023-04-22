@@ -11,13 +11,14 @@ class TaskListTest : TestCase() {
     @Test
     fun showTasksForFirstProject_ByDefault() = run {
         ActivityScenario.launch(MainActivity::class.java)
+        val taskListScreen = TaskListScreen()
 
         step("Отображается название проекта") {
-            TaskListScreen.projectButton.hasText("Inbox")
+            taskListScreen.projectButton.hasText("Inbox")
         }
         step("Отображается список задач") {
-            TaskListScreen.taskList.hasSize(12)
-            TaskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
+            taskListScreen.taskList.hasSize(12)
+            taskListScreen.taskList.childAt<TaskListScreen.TaskItem>(7) {
                 title.hasText("TickTick for embedded calendars and timers.")
                 bullet {
                     isDisplayed()
@@ -30,14 +31,16 @@ class TaskListTest : TestCase() {
     @Test
     fun tasksAreReplaced_AfterProjectIsChosen() = run {
         ActivityScenario.launch(MainActivity::class.java)
+        val taskListScreen = TaskListScreen()
+        val chooseProjectScreen = ChooseProjectScreen()
 
         step("Выбор проекта") {
-            TaskListScreen.projectButton.click()
-            ChooseProjectScreen.list.childAt<ChooseProjectScreen.ProjectItem>(4) { click() }
+            taskListScreen.projectButton.click()
+            chooseProjectScreen.list.childAt<ChooseProjectScreen.ProjectItem>(4) { click() }
         }
         step("Отображаются задачи выбранного проекта") {
-            TaskListScreen.projectButton.hasText("Try Boards")
-            TaskListScreen.taskList.hasSize(3)
+            taskListScreen.projectButton.hasText("Try Boards")
+            taskListScreen.taskList.hasSize(3)
         }
     }
 }

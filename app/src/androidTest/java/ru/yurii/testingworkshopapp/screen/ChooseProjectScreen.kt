@@ -9,7 +9,7 @@ import org.hamcrest.Matcher
 import ru.yurii.testingworkshopapp.R
 import ru.yurii.testingworkshopapp.projectlist.ChooseProjectDialogFragment
 
-object ChooseProjectScreen : KScreen<ChooseProjectScreen>() {
+class ChooseProjectScreen : KScreen<ChooseProjectScreen>() {
     override val layoutId: Int = R.layout.choose_project_dialog_fragment
     override val viewClass: Class<*> = ChooseProjectDialogFragment::class.java
 
